@@ -19,11 +19,14 @@ Also install Visual C++ Redistributable:
     scoop install vcredist2015
     scoop uninstall vcredist2015
 
-### Python / Miniconda
+### Python / [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
 
     scoop install miniconda3
-    conda update -n base --all
+    # `mamba init` won't work
     conda init
+    mamba update -n base --all
+    # For Neovim
+    mamba install pynvim
 
 ### Install Python Apps with pipx
 
