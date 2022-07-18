@@ -19,9 +19,10 @@ Also install Visual C++ Redistributable:
     scoop install vcredist2015
     scoop uninstall vcredist2015
 
-### Python / [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge)
+### Python
 
-    scoop install miniconda3
+Download and install [Mambaforge](https://github.com/conda-forge/miniforge#mambaforge).
+
     # `mamba init` won't work
     conda init
     mamba update -n base --all
@@ -30,7 +31,7 @@ Also install Visual C++ Redistributable:
 
 ### Install Python Apps with pipx
 
-    pip install pipx
+    mamba install pipx
     pipx ensurepath
 
 May need reboot to set PATH properly.
@@ -39,6 +40,7 @@ May need reboot to set PATH properly.
     pipx install flake8
     pipx install neovim-remote
     pipx install reorder-python-imports
+    pipx install yamllint
 
 Currently, virtualenv==20.0.34 is not compatible with conda on Windows:
 
