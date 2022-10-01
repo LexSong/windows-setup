@@ -74,4 +74,6 @@ See https://superuser.com/a/1300251 for more details.
 
 ### Remap Hotkeys in Applications with [PowerToys Keyboard Manager](https://docs.microsoft.com/en-us/windows/powertoys/keyboard-manager) 
 
-    scoop install dotnet-sdk powertoys
+Download Powertoy [here](https://github.com/microsoft/PowerToys/releases/).
+
+Don't install Powertoy with non-standard tool like Scoop.
