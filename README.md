@@ -71,9 +71,3 @@ Reboot for the above changes to take effect.
     reg add HKEY_CURRENT_USER\Console /v VirtualTerminalLevel /t REG_DWORD /d 0x00000001 /f
 
 See https://superuser.com/a/1300251 for more details.
-
-### Remap Hotkeys in Applications with [PowerToys Keyboard Manager](https://docs.microsoft.com/en-us/windows/powertoys/keyboard-manager) 
-
-Download Powertoy [here](https://github.com/microsoft/PowerToys/releases/).
-
-Don't install Powertoy with non-standard tool like Scoop.
