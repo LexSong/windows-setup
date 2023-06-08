@@ -38,6 +38,11 @@ Add `miniforge3\condabin\venv.bat`:
 
     echo conda.bat activate .\.venv > miniforge3\condabin\venv.bat
 
+Updated Conda solver to libmamba
+
+    conda install -n base conda-libmamba-solver
+    conda config --set solver libmamba
+
 Create a virtual environment for Neovim pynvim:
 
     conda create -n pynvim pynvim
