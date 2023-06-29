@@ -6,7 +6,7 @@
 
 Install Scoop with PowerShell:
 
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+    irm get.scoop.sh | iex
     scoop install 7zip aria2 git sudo
     scoop bucket add extras
 
