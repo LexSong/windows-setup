@@ -7,7 +7,7 @@
 Install Scoop with PowerShell:
 
     irm get.scoop.sh | iex
-    scoop install 7zip aria2 git sudo
+    scoop install 7zip aria2 git pwsh sudo
     scoop bucket add extras
 
 ### Neovim
