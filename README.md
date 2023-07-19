@@ -29,9 +29,9 @@ Initialize Conda, restart command prompt:
 
     miniforge3\Scripts\conda.exe init
 
-Update conda and brotlipy together due to [this issue](https://github.com/conda/conda/issues/9903) identified on 2023-06-08:
+Update conda and brotli-python together due to [this issue](https://github.com/conda/conda/issues/9903) identified on 2023-06-08:
 
-    conda update -n base conda brotlipy
+    conda update -n base conda brotli-python
     conda update -n base --all
 
 Add `miniforge3\condabin\venv.bat`:
