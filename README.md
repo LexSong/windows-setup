@@ -58,9 +58,8 @@ May need reboot to set PATH properly.
 
     pipx install black
     pipx install conda-lock
-    pipx install flake8
-    pipx install poetry
     pipx install reorder-python-imports
+    pipx install ruff
     pipx install yamllint
 
 ## Personal Configs
