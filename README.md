@@ -23,44 +23,15 @@ Also install Visual C++ Redistributable:
 
 ### Python
 
-Download and install [Miniforge3](https://github.com/conda-forge/miniforge#miniforge3). No need to add PATH.
+Use `pixi` and `uv` to install conda and python environments instead.
 
-Initialize Conda, restart command prompt:
+    scoop install pixi
+    scoop install uv
 
-    miniforge3\Scripts\conda.exe init
+Use `uv tool` to install python apps only in PyPA:
 
-Update conda and brotli-python together due to [this issue](https://github.com/conda/conda/issues/9903) identified on 2023-06-08:
-
-    conda update -n base conda brotli-python
-    conda update -n base --all
-
-Add `miniforge3\condabin\venv.bat`:
-
-    echo conda.bat activate .\.venv > miniforge3\condabin\venv.bat
-
-Updated Conda solver to libmamba
-
-    conda install -n base conda-libmamba-solver
-    conda config --set solver libmamba
-
-Create a virtual environment for Neovim pynvim:
-
-    conda create -n pynvim pynvim
-
-### Install Python Apps with pipx
-
-Create a virtual environment for pipx:
-
-    conda create -n pipx pipx
-    pipx ensurepath
-
-May need reboot to set PATH properly.
-
-    pipx install black
-    pipx install conda-lock
-    pipx install reorder-python-imports
-    pipx install ruff
-    pipx install yamllint
+    scoop install ruff
+    uv tool install reorder-python-imports
 
 ## Personal Configs
 
