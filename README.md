@@ -28,7 +28,7 @@ Use `pixi` and `uv` to install conda and python environments instead.
     scoop install pixi
     scoop install uv
 
-Use `uv tool` to install python apps only in PyPA:
+Use `uv tool` to install Python apps instead if they're not available in Scoop.
 
     scoop install ruff
     uv tool install reorder-python-imports
