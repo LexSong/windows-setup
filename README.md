@@ -18,8 +18,8 @@ Install Neovim:
 
 Also install Visual C++ Redistributable:
 
-    scoop install vcredist2015
-    scoop uninstall vcredist2015
+    scoop install vcredist2022
+    scoop uninstall vcredist2022
 
 ### Python
 
