@@ -47,10 +47,9 @@ https://github.com/LexSong/nvim
 
 ### Remap Capslock to Ctrl Key
 
-    curl -O https://raw.githubusercontent.com/LexSong/windows-setup/master/CapslockToCtrl.reg
-    sudo reg import CapslockToCtrl.reg
-
-Reboot for the above changes to take effect.
+1.  Download the [CapslockToCtrl.reg](https://raw.githubusercontent.com/LexSong/windows-setup/master/CapslockToCtrl.reg) registry file and double-click it.
+2.  Click Yes on both the UAC security prompt and the registry confirmation.
+3.  Restart the computer for the key remapping to take effect.
 
 ### Enable Virtual Terminal
 
