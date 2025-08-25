@@ -57,9 +57,3 @@ https://github.com/LexSong/nvim
 1.  Download the [CapslockToCtrl.reg](https://raw.githubusercontent.com/LexSong/windows-setup/master/CapslockToCtrl.reg) registry file and double-click it.
 2.  Click Yes on both the UAC security prompt and the registry confirmation.
 3.  Restart the computer for the key remapping to take effect.
-
-### Enable Virtual Terminal
-
-    reg add HKEY_CURRENT_USER\Console /v VirtualTerminalLevel /t REG_DWORD /d 0x00000001 /f
-
-See https://superuser.com/a/1300251 for more details.
