@@ -2,6 +2,13 @@
 
 ## Essential Apps
 
+### Install Desktop Applications with WinGet
+
+Install apps with winget, avoid opening Edge:
+
+    winget install Google.Chrome
+    winget install Valve.Steam
+
 ### [Scoop](https://scoop.sh/)
 
 Install Scoop with PowerShell:
