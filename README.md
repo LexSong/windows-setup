@@ -15,11 +15,13 @@ Open this page in Chrome and paste into cmd:
     bootstrap.cmd
 
 The script is linear on purpose: it stops at the first failure and is safe to
-run again after fixing the problem. It installs Scoop and Git, checks out the
-bare [dotfiles](https://github.com/LexSong/dotfiles) repo into the home
-directory, then installs everything else: CLI tools, MSYS2 + fish (the daily
-shell), fonts, uv and npm tools. Desktop apps are not covered by the script.
-See the comments in [bootstrap.cmd](bootstrap.cmd) for details.
+run again after fixing the problem. In order, it: sets `HOME` so MSYS2 uses the
+Windows home; installs Scoop and its packages; sets up MSYS2 + fish (the daily
+shell); installs the uv and npm global tools; and finally checks out the config
+repos — the bare [dotfiles](https://github.com/LexSong/dotfiles) repo,
+[windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings),
+and the [Neovim config](https://github.com/LexSong/nvim). Desktop apps are not
+covered — see below. Read [bootstrap.cmd](bootstrap.cmd) for the details.
 
 ## Windows Terminal Settings
 
