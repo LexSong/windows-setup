@@ -9,7 +9,7 @@ Install apps with winget, avoid opening Edge:
 
 ## Bootstrap
 
-Open this page in Chrome, then:
+Open this page in Chrome and paste into cmd:
 
     curl -LO https://raw.githubusercontent.com/LexSong/windows-setup/main/bootstrap.cmd
     bootstrap.cmd
