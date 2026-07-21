@@ -6,9 +6,6 @@
       local path?) — add it to the uv tools section once decided.
 - [ ] Windows Terminal settings step is disabled until the settings move to their
       own repo (see below); then make bootstrap clone it and enable the copy.
-- [ ] The WT profile uses "CaskaydiaMono Nerd Font", but nothing installs it —
-      uncomment the nerd-fonts lines in the optional section, or drop the font
-      from the profile.
 - [ ] Test the whole script on a fresh machine or VM.
 
 ## Repo refactoring

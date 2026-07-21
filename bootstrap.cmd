@@ -64,6 +64,10 @@ call scoop install czkawka innounp llama-swap || exit /b
 call scoop bucket add extras
 call scoop install avidemux CrystalDiskMark IrfanView krokiet mitmproxy qbittorrent rapidee spacesniffer typora vlc winmerge || exit /b
 
+:: --- Fonts: "CaskaydiaMono Nerd Font", used by the Windows Terminal profile ---
+call scoop bucket add nerd-fonts
+call scoop install CascadiaMono-NF || exit /b
+
 :: Minecraft: Prism Launcher (personal build) + Java 8 for old versions
 call scoop bucket add java
 call scoop bucket add my-scoop-bucket https://github.com/LexSong/my-scoop-bucket
