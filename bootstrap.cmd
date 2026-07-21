@@ -23,11 +23,16 @@ set "PATH=%USERPROFILE%\scoop\shims;%PATH%"
 
 :: --- Scoop packages (snapshot of the working machine, 2026-07-22) ---
 
-:: Git first, plus the helpers scoop itself uses for downloads/archives
-call scoop install 7zip git aria2 || exit /b
+:: Git first -- scoop needs it to add the extras bucket below.
+:: 7zip and aria2 are the helpers scoop uses for archives and downloads
+call scoop install git 7zip aria2 || exit /b
+
+:: extras bucket holds vcredist and the GUI apps
+:: (re-adding an existing bucket fails harmlessly)
+call scoop bucket add extras
 
 :: Shells and editor
-call scoop install neovim msys2 pwsh || exit /b
+call scoop install msys2 neovim pwsh || exit /b
 
 :: Neovim needs the VC++ runtime: install it system-wide, then drop the package.
 call scoop install vcredist2022 || exit /b
@@ -39,25 +44,25 @@ call scoop install bat diffutils dust fd fzf just ripgrep scoop-search topgrade 
 :: Programming languages and dev tooling
 call scoop install gcc jq nodejs pixi ruff rust sqlite stylua taplo tree-sitter uv || exit /b
 
-:: Media and documents
-call scoop install ffmpeg pandoc || exit /b
+:: Multimedia
+call scoop install avidemux ffmpeg IrfanView vlc || exit /b
 
-:: Download, sync, and backup
-call scoop install rclone restic megacmd || exit /b
-
-:: Android
-call scoop install adb scrcpy || exit /b
+:: Downloads, cloud sync, and backup
+call scoop install megacmd qbittorrent rclone restic || exit /b
 
 :: Misc:
-::   czkawka - duplicate finder
+::   adb, scrcpy - Android
+::   CrystalDiskMark - benchmark
+::   czkawka, krokiet - duplicate finder (krokiet is the GUI)
 ::   innounp - Inno Setup unpacker
 ::   llama-swap - local LLM proxy
-call scoop install czkawka innounp llama-swap || exit /b
-
-:: --- Extras bucket: GUI apps and tools ---
-:: (re-adding an existing bucket fails harmlessly)
-call scoop bucket add extras
-call scoop install avidemux CrystalDiskMark IrfanView krokiet mitmproxy qbittorrent rapidee spacesniffer typora vlc winmerge || exit /b
+::   mitmproxy - HTTP debugging proxy
+::   pandoc - document converter
+::   rapidee - environment variable editor
+::   spacesniffer - disk usage
+::   typora - markdown editor
+::   winmerge - diff and merge
+call scoop install adb scrcpy CrystalDiskMark czkawka krokiet innounp llama-swap mitmproxy pandoc rapidee spacesniffer typora winmerge || exit /b
 
 :: --- Fonts: "CaskaydiaMono Nerd Font", used by the Windows Terminal profile ---
 call scoop bucket add nerd-fonts
