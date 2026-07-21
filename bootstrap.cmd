@@ -11,25 +11,20 @@
 :: are allowed to fail so a crashed run can simply be re-run.
 
 setlocal
-set "PATH=%USERPROFILE%\scoop\shims;%PATH%"
 
-:: --- Scoop (PowerShell only as a subprocess, just for the installer) ---
-if not exist "%USERPROFILE%\scoop" powershell -NoProfile -ExecutionPolicy Bypass -Command "irm get.scoop.sh | iex" || exit /b
-
-:: --- Git, plus the helpers scoop itself uses for downloads/archives ---
-call scoop install 7zip git aria2 || exit /b
-
-:: --- Dotfiles: bare repo in %USERPROFILE%\.dotfiles, work tree = home ---
-git init --bare "%USERPROFILE%\.dotfiles" || exit /b
-git --git-dir="%USERPROFILE%\.dotfiles" remote add origin https://github.com/LexSong/dotfiles
-git --git-dir="%USERPROFILE%\.dotfiles" fetch origin || exit /b
-git --git-dir="%USERPROFILE%\.dotfiles" --work-tree="%USERPROFILE%" checkout main || exit /b
-
+:: Set HOME permanently (setx writes the user environment in the registry).
 :: MSYS2 honors an existing HOME env var instead of /home/<user>, so fish
 :: reads ~/.config/fish from the real Windows home. This is the only glue.
 setx HOME "%USERPROFILE%" || exit /b
 
+:: --- Scoop (PowerShell only as a subprocess, just for the installer) ---
+if not exist "%USERPROFILE%\scoop" powershell -NoProfile -ExecutionPolicy Bypass -Command "irm get.scoop.sh | iex" || exit /b
+set "PATH=%USERPROFILE%\scoop\shims;%PATH%"
+
 :: --- Scoop packages (snapshot of the working machine, 2026-07-22) ---
+
+:: Git first, plus the helpers scoop itself uses for downloads/archives
+call scoop install 7zip git aria2 || exit /b
 
 :: Shells and editor
 call scoop install neovim msys2 pwsh || exit /b
@@ -109,6 +104,12 @@ set "PATH=%USERPROFILE%\scoop\apps\nodejs\current\bin;%USERPROFILE%\scoop\apps\n
 :: survives nodejs updates (the bundled one is replaced each update)
 call npm install -g npm || exit /b
 call npm install -g cspell prettier pyright || exit /b
+
+:: --- Dotfiles: bare repo in %USERPROFILE%\.dotfiles, work tree = home ---
+git init --bare "%USERPROFILE%\.dotfiles" || exit /b
+git --git-dir="%USERPROFILE%\.dotfiles" remote add origin https://github.com/LexSong/dotfiles
+git --git-dir="%USERPROFILE%\.dotfiles" fetch origin || exit /b
+git --git-dir="%USERPROFILE%\.dotfiles" --work-tree="%USERPROFILE%" checkout main || exit /b
 
 :: --- Neovim config ---
 if not exist "%LOCALAPPDATA%\nvim" (git clone https://github.com/LexSong/nvim "%LOCALAPPDATA%\nvim" || exit /b)
