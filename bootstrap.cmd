@@ -74,8 +74,6 @@ call scoop bucket add my-scoop-bucket https://github.com/LexSong/my-scoop-bucket
 call scoop install temurin8-jre prismlauncher-np || exit /b
 
 :: --- MSYS2 + fish (the daily shell) ---
-:: Windows Terminal profile launches it with:
-::   msys2_shell.cmd -msys2 -defterm -here -no-start -full-path -shell fish
 set "MSYS2=%USERPROFILE%\scoop\apps\msys2\current"
 "%MSYS2%\usr\bin\bash.exe" -lc true || exit /b
 :: -Syu runs twice on purpose: the first pass may upgrade only the core
