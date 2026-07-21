@@ -1,18 +1,15 @@
 # Windows Setup
 
-## Step 1: Desktop Apps
+## Winget Apps
 
-On a fresh machine, type this into a cmd prompt — winget the apps without
-touching Edge:
+Install apps with winget, avoid opening Edge:
 
     winget install Google.Chrome
     winget install Valve.Steam
 
-Then open this page in Chrome and copy-paste the next step.
+## Bootstrap
 
-## Step 2: Bootstrap
-
-Run in a regular (non-admin) cmd prompt:
+Open this page in Chrome, then:
 
     curl -LO https://raw.githubusercontent.com/LexSong/windows-setup/main/bootstrap.cmd
     bootstrap.cmd
@@ -26,11 +23,11 @@ See the comments in [bootstrap.cmd](bootstrap.cmd) for details.
 
 ## WSL and Docker Sandboxes
 
-WSL is not preinstalled. Run this in an **admin** prompt, then reboot:
+Docker Sandboxes expects an installed WSL. Run in an admin prompt and reboot:
 
     wsl --install
 
-After the reboot, install Docker Sandboxes:
+Then:
 
     winget install Docker.sbx
 
