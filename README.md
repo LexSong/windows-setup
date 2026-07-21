@@ -21,6 +21,12 @@ directory, then installs everything else: CLI tools, MSYS2 + fish (the daily
 shell), fonts, uv and npm tools. Desktop apps are not covered by the script.
 See the comments in [bootstrap.cmd](bootstrap.cmd) for details.
 
+## Windows Terminal Settings
+
+The bootstrap clones [windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings)
+into the home directory; linking needs admin, so run `link-settings.cmd` there
+yourself.
+
 ## WSL and Docker Sandboxes
 
 Docker Sandboxes expects an installed WSL. Run in an admin prompt and reboot:
@@ -42,4 +48,5 @@ Skip this if the keyboard already remaps in hardware.
 ## Related Repos
 
 - dotfiles: https://github.com/LexSong/dotfiles
+- Windows Terminal settings: https://github.com/LexSong/windows-terminal-settings
 - Neovim config: https://github.com/LexSong/nvim

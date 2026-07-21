@@ -111,13 +111,12 @@ git --git-dir="%USERPROFILE%\.dotfiles" remote add origin https://github.com/Lex
 git --git-dir="%USERPROFILE%\.dotfiles" fetch origin || exit /b
 git --git-dir="%USERPROFILE%\.dotfiles" --work-tree="%USERPROFILE%" checkout main || exit /b
 
+:: --- Windows Terminal settings ---
+:: Linking needs admin: run link-settings.cmd there manually afterwards.
+if not exist "%USERPROFILE%\windows-terminal-settings" (git clone https://github.com/LexSong/windows-terminal-settings "%USERPROFILE%\windows-terminal-settings" || exit /b)
+
 :: --- Neovim config ---
 if not exist "%LOCALAPPDATA%\nvim" (git clone https://github.com/LexSong/nvim "%LOCALAPPDATA%\nvim" || exit /b)
-
-:: --- Windows Terminal settings ---
-:: TODO: windows-terminal-settings will move to its own git repo; once that
-:: exists, clone it here and enable the copy into WT's LocalState.
-:: copy /Y "%USERPROFILE%\windows-terminal-settings\settings.json" "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 
 echo Done. Open the "MSYS2 Fish" profile in Windows Terminal.
 echo See README.md for the remaining steps (WSL, Docker Sandboxes).
