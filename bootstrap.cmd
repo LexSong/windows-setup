@@ -93,6 +93,8 @@ set "UV_PYTHON_BIN_DIR=%USERPROFILE%\scoop\persist\uv\python\shims"
 set "UV_PYTHON_INSTALL_DIR=%USERPROFILE%\scoop\persist\uv\python\versions"
 set "UV_TOOL_BIN_DIR=%USERPROFILE%\scoop\persist\uv\tools\shims"
 set "UV_TOOL_DIR=%USERPROFILE%\scoop\persist\uv\tools\versions"
+:: also put the tool shims on PATH, or every install below prints a warning
+set "PATH=%UV_TOOL_BIN_DIR%;%PATH%"
 uv tool install gallery-dl || exit /b
 uv tool install git-filter-repo || exit /b
 uv tool install huggingface-hub || exit /b
@@ -103,6 +105,9 @@ uv tool install yt-dlp || exit /b
 :: nodejs has no scoop shims; it lives on PATH via the user environment
 :: (registry), which this session doesn't see -- add it manually.
 set "PATH=%USERPROFILE%\scoop\apps\nodejs\current\bin;%USERPROFILE%\scoop\apps\nodejs\current;%PATH%"
+:: npm itself first: the global copy lives in the persist dir, so it
+:: survives nodejs updates (the bundled one is replaced each update)
+call npm install -g npm || exit /b
 call npm install -g cspell prettier pyright || exit /b
 
 :: --- Neovim config ---
