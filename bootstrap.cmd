@@ -102,11 +102,5 @@ if not exist "%LOCALAPPDATA%\nvim" (git clone https://github.com/LexSong/nvim "%
 :: exists, clone it here and enable the copy into WT's LocalState.
 :: copy /Y "%USERPROFILE%\windows-terminal-settings\settings.json" "%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 
-:: --- Desktop apps via winget ---
-:: (no || exit /b: winget errors on already-installed apps, and a re-run
-:: of this script should not stop here; WSL and Docker Sandboxes are
-:: manual steps -- see README.md)
-winget install Google.Chrome
-winget install Valve.Steam
-
 echo Done. Open the "MSYS2 Fish" profile in Windows Terminal.
+echo See README.md for the remaining steps (WSL, Docker Sandboxes).
