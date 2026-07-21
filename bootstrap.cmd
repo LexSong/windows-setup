@@ -85,6 +85,14 @@ set "MSYS2=%USERPROFILE%\scoop\apps\msys2\current"
 "%MSYS2%\usr\bin\pacman.exe" -S --needed --noconfirm fish || exit /b
 
 :: --- Python CLI tools (no global python -- everything through uv) ---
+:: Scoop wrote the UV_* vars into the user environment (registry): new
+:: shells get them, but this session must set them itself so uv places
+:: tools in the persist dir.
+set "UV_CACHE_DIR=%USERPROFILE%\scoop\persist\uv\cache"
+set "UV_PYTHON_BIN_DIR=%USERPROFILE%\scoop\persist\uv\python\shims"
+set "UV_PYTHON_INSTALL_DIR=%USERPROFILE%\scoop\persist\uv\python\versions"
+set "UV_TOOL_BIN_DIR=%USERPROFILE%\scoop\persist\uv\tools\shims"
+set "UV_TOOL_DIR=%USERPROFILE%\scoop\persist\uv\tools\versions"
 uv tool install gallery-dl || exit /b
 uv tool install git-filter-repo || exit /b
 uv tool install huggingface-hub || exit /b
@@ -92,6 +100,9 @@ uv tool install reorder-python-imports || exit /b
 uv tool install yt-dlp || exit /b
 
 :: --- npm global tools ---
+:: nodejs has no scoop shims; it lives on PATH via the user environment
+:: (registry), which this session doesn't see -- add it manually.
+set "PATH=%USERPROFILE%\scoop\apps\nodejs\current\bin;%USERPROFILE%\scoop\apps\nodejs\current;%PATH%"
 call npm install -g cspell prettier pyright || exit /b
 
 :: --- Neovim config ---
