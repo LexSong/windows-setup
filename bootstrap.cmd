@@ -73,10 +73,6 @@ call scoop bucket add java
 call scoop bucket add my-scoop-bucket https://github.com/LexSong/my-scoop-bucket
 call scoop install temurin8-jre prismlauncher-np || exit /b
 
-:: Nerd fonts
-call scoop bucket add nerd-fonts
-call scoop install CascadiaMono-NF
-
 :: --- MSYS2 + fish (the daily shell) ---
 :: Windows Terminal profile launches it with:
 ::   msys2_shell.cmd -msys2 -defterm -here -no-start -full-path -shell fish
