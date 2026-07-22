@@ -115,9 +115,7 @@ if not exist "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" (g
 call "%USERPROFILE%\windows-setup\dotfiles\link.cmd" || exit /b
 
 :: --- Fish config ---
-:: TODO: move ~/.config/fish out of the old dotfiles repo into its own
-:: repo, then clone it here:
-:: if not exist "%USERPROFILE%\.config\fish" (git clone https://github.com/LexSong/fish-config "%USERPROFILE%\.config\fish" || exit /b)
+if not exist "%USERPROFILE%\.config\fish" (git clone https://github.com/LexSong/fish "%USERPROFILE%\.config\fish" || exit /b)
 
 :: --- Neovim config ---
 if not exist "%LOCALAPPDATA%\nvim" (git clone https://github.com/LexSong/nvim "%LOCALAPPDATA%\nvim" || exit /b)
