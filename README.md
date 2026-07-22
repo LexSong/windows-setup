@@ -18,11 +18,12 @@ without admin. Then open this page in Chrome and paste into cmd:
 The script is linear on purpose: it stops at the first failure and is safe to
 run again after fixing the problem. In order, it: sets `HOME` so MSYS2 uses the
 Windows home; installs Scoop and its packages; sets up MSYS2 + fish (the daily
-shell); installs the uv and npm global tools; symlinks the loose dotfiles from
-[dotfiles/](dotfiles) into home; and clones the config repos —
-[windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings)
-and the [Neovim config](https://github.com/LexSong/nvim). Desktop apps are not
-covered — see below. Read [bootstrap.cmd](bootstrap.cmd) for the details.
+shell); installs the uv and npm global tools; symlinks the dotfiles from
+[dotfiles/](dotfiles) into home — including the
+[Windows Terminal settings](https://github.com/LexSong/windows-terminal-settings),
+cloned in there; and clones the [fish](https://github.com/LexSong/fish) and
+[Neovim](https://github.com/LexSong/nvim) config repos into place. Desktop apps
+are not covered — see below. Read [bootstrap.cmd](bootstrap.cmd) for the details.
 
 ## WSL and Docker Sandboxes
 
@@ -45,4 +46,5 @@ Skip this if the keyboard already remaps in hardware.
 ## Related Repos
 
 - Windows Terminal settings: https://github.com/LexSong/windows-terminal-settings
+- fish config: https://github.com/LexSong/fish
 - Neovim config: https://github.com/LexSong/nvim
