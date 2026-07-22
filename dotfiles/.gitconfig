@@ -1,0 +1,28 @@
+[user]
+    name = Lex Song
+    email = LexSong.tw@gmail.com
+[core]
+    autocrlf = input
+    editor = nvim
+[init]
+    defaultBranch = main
+[diff]
+    tool = vimdiff
+[difftool "vimdiff"]
+    path = nvim
+[merge]
+    tool = vimdiff
+[mergetool "vimdiff"]
+    path = nvim
+[diff "sqlite3"]
+    textconv = "echo .dump | sqlite3"
+[credential]
+    helper =
+    helper = manager
+[credential "https://huggingface.co"]
+    provider = generic
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge --skip -- %f
+    process = git-lfs filter-process --skip
+    required = true

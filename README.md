@@ -9,7 +9,8 @@ Install apps with winget, avoid opening Edge:
 
 ## Bootstrap
 
-Open this page in Chrome and paste into cmd:
+Enable Developer Mode (Settings > System > For developers) so symlinks work
+without admin. Then open this page in Chrome and paste into cmd:
 
     curl -LO https://raw.githubusercontent.com/LexSong/windows-setup/main/bootstrap.cmd
     bootstrap.cmd
@@ -17,17 +18,11 @@ Open this page in Chrome and paste into cmd:
 The script is linear on purpose: it stops at the first failure and is safe to
 run again after fixing the problem. In order, it: sets `HOME` so MSYS2 uses the
 Windows home; installs Scoop and its packages; sets up MSYS2 + fish (the daily
-shell); installs the uv and npm global tools; and finally checks out the config
-repos — the bare [dotfiles](https://github.com/LexSong/dotfiles) repo,
-[windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings),
+shell); installs the uv and npm global tools; symlinks the loose dotfiles from
+[dotfiles/](dotfiles) into home; and clones the config repos —
+[windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings)
 and the [Neovim config](https://github.com/LexSong/nvim). Desktop apps are not
 covered — see below. Read [bootstrap.cmd](bootstrap.cmd) for the details.
-
-## Windows Terminal Settings
-
-The bootstrap clones [windows-terminal-settings](https://github.com/LexSong/windows-terminal-settings)
-into the home directory; linking needs admin, so run `link-settings.cmd` there
-yourself.
 
 ## WSL and Docker Sandboxes
 
@@ -49,6 +44,5 @@ Skip this if the keyboard already remaps in hardware.
 
 ## Related Repos
 
-- dotfiles: https://github.com/LexSong/dotfiles
 - Windows Terminal settings: https://github.com/LexSong/windows-terminal-settings
 - Neovim config: https://github.com/LexSong/nvim

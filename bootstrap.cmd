@@ -108,15 +108,16 @@ set "PATH=%USERPROFILE%\scoop\apps\nodejs\current\bin;%USERPROFILE%\scoop\apps\n
 call npm install -g npm || exit /b
 call npm install -g cspell prettier pyright || exit /b
 
-:: --- Dotfiles: bare repo in %USERPROFILE%\.dotfiles, work tree = home ---
-git init --bare "%USERPROFILE%\.dotfiles" || exit /b
-git --git-dir="%USERPROFILE%\.dotfiles" remote add origin https://github.com/LexSong/dotfiles
-git --git-dir="%USERPROFILE%\.dotfiles" fetch origin || exit /b
-git --git-dir="%USERPROFILE%\.dotfiles" --work-tree="%USERPROFILE%" checkout main || exit /b
+:: --- Dotfiles: tracked in this repo, symlinked into home ---
+:: (needs Developer Mode for mklink without admin -- see README.md)
+if not exist "%USERPROFILE%\windows-setup" (git clone https://github.com/LexSong/windows-setup "%USERPROFILE%\windows-setup" || exit /b)
+if not exist "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" (git clone https://github.com/LexSong/windows-terminal-settings "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" || exit /b)
+call "%USERPROFILE%\windows-setup\dotfiles\link.cmd" || exit /b
 
-:: --- Windows Terminal settings ---
-:: Linking needs admin: run link-settings.cmd there manually afterwards.
-if not exist "%USERPROFILE%\windows-terminal-settings" (git clone https://github.com/LexSong/windows-terminal-settings "%USERPROFILE%\windows-terminal-settings" || exit /b)
+:: --- Fish config ---
+:: TODO: move ~/.config/fish out of the old dotfiles repo into its own
+:: repo, then clone it here:
+:: if not exist "%USERPROFILE%\.config\fish" (git clone https://github.com/LexSong/fish-config "%USERPROFILE%\.config\fish" || exit /b)
 
 :: --- Neovim config ---
 if not exist "%LOCALAPPDATA%\nvim" (git clone https://github.com/LexSong/nvim "%LOCALAPPDATA%\nvim" || exit /b)

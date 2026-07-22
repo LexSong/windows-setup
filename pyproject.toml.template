@@ -1,0 +1,25 @@
+[project]
+name = ""
+version = "0.0.0"
+requires-python = ">=3.13, <3.14"
+
+[tool.pyright]
+# Point Pyright (Claude Code / CLI / CI) at the uv-managed .venv. neovim resolves
+# it via before_init instead; both agree on ./.venv, so no conflict.
+venvPath = "."
+venv = ".venv"
+# For a pixi project instead, swap the two lines above for these:
+# venvPath = ".pixi/envs"
+# venv = "default"
+
+[tool.ruff]
+line-length = 120
+
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu132" }]
+torchvision = [{ index = "pytorch-cu132" }]
