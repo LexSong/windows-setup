@@ -17,6 +17,9 @@ setlocal
 :: reads ~/.config/fish from the real Windows home. This is the only glue.
 setx HOME "%USERPROFILE%" || exit /b
 
+:: Keep less from littering the home directory with a ~/.lesshst history file.
+setx LESSHISTFILE "-" || exit /b
+
 :: --- Scoop (PowerShell only as a subprocess, just for the installer) ---
 if not exist "%USERPROFILE%\scoop" powershell -NoProfile -ExecutionPolicy Bypass -Command "irm get.scoop.sh | iex" || exit /b
 set "PATH=%USERPROFILE%\scoop\shims;%PATH%"
