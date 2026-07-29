@@ -7,25 +7,11 @@
 
 import sys
 import tempfile
+from itertools import groupby
 from pathlib import Path
 
 import pysubs2
 import yt_dlp
-
-
-def iter_texts(subs: pysubs2.SSAFile):
-    for event in subs:
-        yield event.plaintext.strip()
-
-
-def dedupe_lines(texts) -> list:
-    lines = []
-    prev = None
-    for text in texts:
-        if text and text != prev:
-            lines.append(text)
-        prev = text
-    return lines
 
 
 def main():
@@ -67,7 +53,9 @@ def main():
         srt_path = srt_files[0]
 
         subs = pysubs2.load(str(srt_path))
-        lines = dedupe_lines(iter_texts(subs))
+        texts = [event.plaintext.strip() for event in subs]
+        # groupby collapses runs of repeated cues; drop the blanks that remain.
+        lines = [text for text, _ in groupby(texts) if text]
         out_name = srt_path.stem + ".txt"
 
     out_path = Path.cwd() / out_name
