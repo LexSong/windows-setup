@@ -12,7 +12,6 @@ cd /d "%USERPROFILE%"
 
 call :link .gitconfig .gitconfig || exit /b
 call :link yt-dlp.config AppData\Roaming\yt-dlp\config || exit /b
-call :link .local\bin\yt-sub-txt.py .local\bin\yt-sub-txt.py || exit /b
 :: from the windows-terminal-settings repo, cloned next to the dotfiles
 call :link windows-terminal-settings\settings.json AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json || exit /b
 goto :eof

@@ -22,6 +22,13 @@ for *this* machine, not for portability.
 
 ## Architecture
 
+**Where things go.** This repo is the home base — anything without an obvious
+home lands at its root. The other two places have entry criteria: `dotfiles/`
+is the *linkage* layer (a file belongs there only if `link.cmd` symlinks it into
+home), and the fish repo is the *interface* layer (functions that reach payloads
+here by path). Root is the residual. Membership in `dotfiles/` **means** "this
+is linked", so a file that stops being linked moves back out to root.
+
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
 - **`dotfiles/`** — loose files tracked here and **symlinked** into home by
@@ -30,8 +37,10 @@ for *this* machine, not for portability.
   Developer Mode for `mklink` without admin.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **`pyproject.toml.template`** — lives at repo root, **not** linked. Copied on
-  demand by the `pyproject` fish function.
+- **Repo root** — payloads that are **not** linked, reached by path from a fish
+  function: `pyproject.toml.template` (copied by `pyproject`) and
+  `yt-sub-txt.py` (run by `yt-sub-txt` via `uv run --script`). Promote these
+  into `scripts/` if root gets crowded; one or two files don't earn a directory.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those
