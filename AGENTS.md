@@ -37,13 +37,16 @@ is linked", so a file that stops being linked moves back out to root.
   Developer Mode for `mklink` without admin.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **Repo root** — payloads that are **not** linked, reached by path from a fish
-  function: `pyproject-template/` (copied by `pyproject`) and `yt-sub-txt.py`
-  (run by `yt-sub-txt` via `uv run --script`).
-- **`pyproject-template/`** — copied wholesale into a new project (`cp -rn …/. .`),
-  so it mirrors what lands: `pyproject.toml`, plus a `.claude/settings.json`
-  whose PostToolUse hook runs ruff on Python files Claude edits. Grow the folder
-  rather than teaching the fish function about individual files.
+- **`pyproject-template/`** — copied wholesale into a new project by `pyproject`
+  (`cp -rn …/. .`), so it mirrors what lands: `pyproject.toml`, plus a
+  `.claude/settings.json` whose PostToolUse hook runs ruff on Python files
+  Claude edits. Grow the folder rather than teaching the fish function about
+  individual files.
+- **`yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
+- **`project-checkup.sh`** — run by `checkup`, and by a `SessionStart` hook in
+  `~/.claude/settings.json`. Names my own repos that are missing a `CLAUDE.md`,
+  `force-single-line`, or the per-project format hook; silent otherwise, and
+  silent about repos that aren't mine.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those
