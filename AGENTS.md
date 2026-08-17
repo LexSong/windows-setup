@@ -64,6 +64,10 @@ is linked", so a file that stops being linked moves back out to root.
   `setx HOME %USERPROFILE%` is the only glue — path handling is otherwise
   transparent; don't add fixups.
 - No global Python. Use `uv run` / `uv tool`; never call `python`/`pip`.
+- Ruff handles Python imports too — `reorder-python-imports` was dropped, and with
+  it the `--ignore=I001` workaround it forced. `force-single-line` in a project's
+  `pyproject.toml` is what keeps one-import-per-line; don't reintroduce a second
+  import tool.
 - CapsLock→Ctrl is done in hardware now; the `.reg` is kept only for machines
   without that keyboard.
 
