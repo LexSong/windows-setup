@@ -15,6 +15,9 @@ venv = ".venv"
 [tool.ruff]
 line-length = 120
 
+[tool.ruff.lint.isort]
+force-single-line = true
+
 [[tool.uv.index]]
 name = "pytorch-cu132"
 url = "https://download.pytorch.org/whl/cu132"
