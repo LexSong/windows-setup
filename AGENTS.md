@@ -38,9 +38,12 @@ is linked", so a file that stops being linked moves back out to root.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
 - **Repo root** — payloads that are **not** linked, reached by path from a fish
-  function: `pyproject.toml.template` (copied by `pyproject`) and
-  `yt-sub-txt.py` (run by `yt-sub-txt` via `uv run --script`). Promote these
-  into `scripts/` if root gets crowded; one or two files don't earn a directory.
+  function: `pyproject-template/` (copied by `pyproject`) and `yt-sub-txt.py`
+  (run by `yt-sub-txt` via `uv run --script`).
+- **`pyproject-template/`** — copied wholesale into a new project (`cp -rn …/. .`),
+  so it mirrors what lands: `pyproject.toml`, plus a `.claude/settings.json`
+  whose PostToolUse hook runs ruff on Python files Claude edits. Grow the folder
+  rather than teaching the fish function about individual files.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those

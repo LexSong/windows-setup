@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in *.py) ruff check -q --select I --fix \"$f\" && ruff format -q \"$f\";; esac",
+            "statusMessage": "Formatting Python..."
+          }
+        ]
+      }
+    ]
+  }
+}
