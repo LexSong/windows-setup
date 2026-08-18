@@ -9,21 +9,21 @@ Install apps with winget, avoid opening Edge:
 
 ## Bootstrap
 
-Enable Developer Mode (Settings > System > For developers) so symlinks work
-without admin. Then open this page in Chrome and paste into cmd:
+Enable Developer Mode (Settings > System > For developers) so symlinks work without admin. Then copy and run these commands in cmd.exe:
 
     curl -LO https://raw.githubusercontent.com/LexSong/windows-setup/main/bootstrap.cmd
     bootstrap.cmd
 
-The script is linear on purpose: it stops at the first failure and is safe to
-run again after fixing the problem. In order, it: sets `HOME` so MSYS2 uses the
-Windows home; installs Scoop and its packages; sets up MSYS2 + fish (the daily
-shell); installs the uv and npm global tools; symlinks the dotfiles from
-[dotfiles/](dotfiles) into home — including the
-[Windows Terminal settings](https://github.com/LexSong/windows-terminal-settings),
-cloned in there; and clones the [fish](https://github.com/LexSong/fish) and
-[Neovim](https://github.com/LexSong/nvim) config repos into place. Desktop apps
-are not covered — see below. Read [bootstrap.cmd](bootstrap.cmd) for the details.
+The script is linear — it stops at the first failure and is safe to run again. In order, it:
+
+- Sets `HOME`, so MSYS2 uses the Windows home instead of its own.
+- Installs Scoop and its packages.
+- Sets up MSYS2 and installs fish, the daily shell.
+- Installs the uv and npm global tools.
+- Clones this repo to `%USERPROFILE%\windows-setup`, with the [Windows Terminal settings](https://github.com/LexSong/windows-terminal-settings) nested in [dotfiles/](dotfiles), then symlinks the files there into home.
+- Clones the [fish](https://github.com/LexSong/fish) and [Neovim](https://github.com/LexSong/nvim) config repos into place.
+
+Bootstrap only installs what scoop, uv, and npm can manage portably; Chrome, Steam, and WSL are separate steps. Read [bootstrap.cmd](bootstrap.cmd) for the details.
 
 ## WSL and Docker Sandboxes
 

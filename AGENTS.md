@@ -87,6 +87,13 @@ this repo (and the latter isn't version-controlled at all).
   `setx HOME %USERPROFILE%` is the only glue — path handling is otherwise
   transparent; don't add fixups.
 - No global Python. Use `uv run` / `uv tool`; never call `python`/`pip`.
+- **Portable by default.** Scoop installs apps stateless/portable, which is the
+  preference, so `bootstrap.cmd` covers what scoop, uv, and npm can manage that
+  way. The exceptions go to winget and stay out of the script: apps where
+  portability causes more trouble than it saves (Chrome, wanted as a real
+  stateful install so it can be the default browser; Steam), and anything
+  needing admin plus a reboot (WSL, and Docker Sandboxes on top of it). Don't
+  fold these in — bootstrap runs non-admin, linear, in one pass.
 - Ruff handles Python imports too — `reorder-python-imports` was dropped, and with
   it the `--ignore=I001` workaround it forced. `force-single-line` in a project's
   `pyproject.toml` is what keeps one-import-per-line; don't reintroduce a second
@@ -100,6 +107,24 @@ this repo (and the latter isn't version-controlled at all).
   have it — so invoke them with `pwsh`, not `powershell`. The
   `-ExecutionPolicy Bypass` in `bootstrap.cmd` is per-invocation for the scoop
   installer's piped `iex`; it persists nothing.
+- README commands are written for the daily shell (fish/MSYS2), so paths use
+  `~/`. pwsh doesn't expand `~` itself, so there is no form that also works in
+  cmd.exe — `%USERPROFILE%` is cmd-only. Bootstrap is the exception; it names
+  cmd.exe explicitly. The wrong shell fails loudly, which is the intended
+  outcome: assume the reader knows `sudo`, `pwsh`, and `~/`, and can act on an
+  error. Don't add shell detection or explain the difference in the README.
+
+## README is a map, not a manual
+
+The reader is the user on a fresh machine: they know the tools, they need the
+route. Keep the commands, and the things they'd forget — where a Windows setting
+lives, that a step needs a reboot, that bootstrap is safe to re-run. Cut the
+rationale: why the script is linear, why scoop over winget, what a flag does.
+That belongs in this file or in the script's own comments. A section that grows
+past a short paragraph plus its commands has turned into documentation.
+
+Trim rationale, not grammar. Full sentences, not note-taking fragments — clipped
+text ("Linear: stops at first failure.") reads as fragile, not concise.
 
 ## When unsure
 
