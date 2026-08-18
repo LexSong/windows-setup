@@ -31,12 +31,13 @@ portability.
 - **`dotfiles/`** — the *linkage* layer: a file belongs here only if `link.cmd`
   symlinks it into home. Membership **means** "this is linked", so a file that
   stops being linked moves out.
-- **`scripts/`** — the *payload* layer: something outside this repo reaches it
-  by path. Today that's fish functions in the fish repo and a hook in
-  `~/.claude/settings.json`. A script's own data (`pyproject-template/`) sits
-  next to it.
-- **root** — a human fetches it by URL (`bootstrap.cmd`, `CapslockToCtrl.reg`),
-  or it's repo metadata. Nothing else.
+- **`scripts/`** — the *payload* layer: everything run from the clone, whether
+  something outside this repo reaches it by path (fish functions, a hook in
+  `~/.claude/settings.json`) or I run it by hand. A script's own data
+  (`pyproject-template/`) sits next to it.
+- **root** — `bootstrap.cmd`, the only file fetched before the clone exists,
+  plus repo metadata. Nothing else: once the repo is on disk everything is
+  reachable by path, so nothing else earns a raw URL.
 
 The fish repo is the *interface* layer on top of `scripts/` — thin wrappers, no
 logic. Because callers reach in by path, **moving anything in `scripts/` means
@@ -90,8 +91,15 @@ this repo (and the latter isn't version-controlled at all).
   it the `--ignore=I001` workaround it forced. `force-single-line` in a project's
   `pyproject.toml` is what keeps one-import-per-line; don't reintroduce a second
   import tool.
-- CapsLock→Ctrl is done in hardware now; the `.reg` is kept only for machines
-  without that keyboard.
+- CapsLock→Ctrl is done in hardware now; `scripts/capslock-to-ctrl.ps1` is
+  kept only for machines without that keyboard.
+- Repo `.ps1` files run under **`pwsh`** with no execution-policy flag: pwsh
+  ships a `powershell.config.json` setting LocalMachine to `RemoteSigned`, and a
+  git clone carries no mark-of-the-web. Windows PowerShell 5.1 has no such
+  default — this machine's `RemoteSigned` sits in HKCU and a fresh one wouldn't
+  have it — so invoke them with `pwsh`, not `powershell`. The
+  `-ExecutionPolicy Bypass` in `bootstrap.cmd` is per-invocation for the scoop
+  installer's piped `iex`; it persists nothing.
 
 ## When unsure
 

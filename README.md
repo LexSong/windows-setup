@@ -37,11 +37,11 @@ Then:
 
 ## Remap Capslock to Ctrl Key
 
-Skip this if the keyboard already remaps in hardware.
+For a keyboard that doesn't already do this in hardware. Needs admin:
 
-1.  Download the [CapslockToCtrl.reg](https://raw.githubusercontent.com/LexSong/windows-setup/main/CapslockToCtrl.reg) registry file and double-click it.
-2.  Click Yes on both the UAC security prompt and the registry confirmation.
-3.  Restart the computer for the key remapping to take effect.
+    sudo pwsh ~/windows-setup/scripts/capslock-to-ctrl.ps1
+
+Restart the computer for the remapping to take effect.
 
 ## Related Repos
 
