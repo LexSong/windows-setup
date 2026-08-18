@@ -34,7 +34,7 @@ if [ -f pyproject.toml ]; then
         add "pyproject.toml has no force-single-line -- ruff's isort will recombine split imports"
     fi
     if [ ! -f .claude/settings.json ]; then
-        add "no .claude/settings.json -- Claude's Python edits are not auto-formatted (cp -rn ~/windows-setup/pyproject-template/. .)"
+        add "no .claude/settings.json -- Claude's Python edits are not auto-formatted (cp -rn ~/windows-setup/scripts/pyproject-template/. .)"
     fi
 fi
 

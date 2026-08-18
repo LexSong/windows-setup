@@ -1,8 +1,11 @@
 # Notes for coding agents
 
-Context for anyone (human or agent) editing this repo. This is a personal,
-single-user Windows 11 Home setup — not a general-purpose framework. Optimize
-for *this* machine, not for portability.
+Context for anyone (human or agent) editing this repo. This is the
+version-controlled layer of one personal Windows 11 Home machine — `$HOME`
+itself isn't a repo, so anything on this machine worth tracking lands here.
+`bootstrap.cmd` is the largest deliverable, not the scope. It's a single-user
+setup, not a general-purpose framework: optimize for *this* machine, not for
+portability.
 
 ## Golden rules
 
@@ -22,12 +25,23 @@ for *this* machine, not for portability.
 
 ## Architecture
 
-**Where things go.** This repo is the home base — anything without an obvious
-home lands at its root. The other two places have entry criteria: `dotfiles/`
-is the *linkage* layer (a file belongs there only if `link.cmd` symlinks it into
-home), and the fish repo is the *interface* layer (functions that reach payloads
-here by path). Root is the residual. Membership in `dotfiles/` **means** "this
-is linked", so a file that stops being linked moves back out to root.
+**Where things go.** Every directory here has an entry criterion about
+*presence*, so nothing is a residual junk drawer:
+
+- **`dotfiles/`** — the *linkage* layer: a file belongs here only if `link.cmd`
+  symlinks it into home. Membership **means** "this is linked", so a file that
+  stops being linked moves out.
+- **`scripts/`** — the *payload* layer: something outside this repo reaches it
+  by path. Today that's fish functions in the fish repo and a hook in
+  `~/.claude/settings.json`. A script's own data (`pyproject-template/`) sits
+  next to it.
+- **root** — a human fetches it by URL (`bootstrap.cmd`, `CapslockToCtrl.reg`),
+  or it's repo metadata. Nothing else.
+
+The fish repo is the *interface* layer on top of `scripts/` — thin wrappers, no
+logic. Because callers reach in by path, **moving anything in `scripts/` means
+editing its caller in the fish repo or `~/.claude/settings.json`**, both outside
+this repo (and the latter isn't version-controlled at all).
 
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
@@ -37,16 +51,18 @@ is linked", so a file that stops being linked moves back out to root.
   Developer Mode for `mklink` without admin.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **`pyproject-template/`** — copied wholesale into a new project by `pyproject`
-  (`cp -rn …/. .`), so it mirrors what lands: `pyproject.toml`, plus a
+- **`scripts/pyproject.sh`** — run by `pyproject`. Copies
+  `scripts/pyproject-template/` wholesale into a new project (`cp -rn …/. .`),
+  so the folder mirrors what lands: `pyproject.toml`, plus a
   `.claude/settings.json` whose PostToolUse hook runs ruff on Python files
-  Claude edits. Grow the folder rather than teaching the fish function about
-  individual files.
-- **`yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
-- **`project-checkup.sh`** — run by `checkup`, and by a `SessionStart` hook in
-  `~/.claude/settings.json`. Names my own repos that are missing a `CLAUDE.md`,
-  `force-single-line`, or the per-project format hook; silent otherwise, and
-  silent about repos that aren't mine.
+  Claude edits. Grow the folder rather than teaching the script about individual
+  files. It refuses to run where a `pyproject.toml` already exists; topping up
+  an existing project is the bare `cp -rn` that `project-checkup.sh` suggests.
+- **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
+- **`scripts/project-checkup.sh`** — run by `checkup`, and by a `SessionStart`
+  hook in `~/.claude/settings.json`. Names my own repos that are missing a
+  `CLAUDE.md`, `force-single-line`, or the per-project format hook; silent
+  otherwise, and silent about repos that aren't mine.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those
