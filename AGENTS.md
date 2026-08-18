@@ -39,10 +39,19 @@ portability.
   plus repo metadata. Nothing else: once the repo is on disk everything is
   reachable by path, so nothing else earns a raw URL.
 
-The fish repo is the *interface* layer on top of `scripts/` — thin wrappers, no
-logic. Because callers reach in by path, **moving anything in `scripts/` means
-editing its caller in the fish repo or `~/.claude/settings.json`**, both outside
-this repo (and the latter isn't version-controlled at all).
+The fish repo is the *interface* layer: every function there wraps a command,
+and what it wraps decides where the work lives. `topgrade` and `gpu-limit` wrap
+`topgrade` and `nvidia-smi` — arrangements of commands that already exist, so
+fish holds all of them however long they get. `yt-sub-txt`, `pyproject`, and
+`checkup` wrap a payload that had to be written, and payloads don't belong in
+shell config, so fish keeps only the invocation. Two cases are forced: a
+function that shadows the binary it calls (`restic`, `topgrade`) can only be a
+function, and anything a non-fish caller needs — the `SessionStart` hook runs
+`sh` — can only be a script.
+
+Because callers reach in by path, **moving anything in `scripts/` means editing
+its caller in the fish repo or `~/.claude/settings.json`**, both outside this
+repo (and the latter isn't version-controlled at all).
 
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
