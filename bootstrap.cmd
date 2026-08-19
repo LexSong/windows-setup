@@ -85,6 +85,15 @@ set "MSYS2=%USERPROFILE%\scoop\apps\msys2\current"
 "%MSYS2%\usr\bin\pacman.exe" -Syu --noconfirm || exit /b
 "%MSYS2%\usr\bin\pacman.exe" -S --needed --noconfirm fish || exit /b
 
+:: --- uv's cache lives on D: ---
+:: The cache holds the multi-GB wheels (torch), and hardlinking into a venv only
+:: works within one volume, so the cache belongs beside the projects on D: rather
+:: than on C:. Scoop's uv manifest re-asserts UV_CACHE_DIR on every uv update, so
+:: redirect the path it points at instead of the variable.
+if not exist "D:\.uv-cache" mkdir "D:\.uv-cache" || exit /b
+if not exist "%USERPROFILE%\scoop\persist\uv" mkdir "%USERPROFILE%\scoop\persist\uv" || exit /b
+if not exist "%USERPROFILE%\scoop\persist\uv\cache" mklink /J "%USERPROFILE%\scoop\persist\uv\cache" "D:\.uv-cache" || exit /b
+
 :: --- Python CLI tools (no global python -- everything through uv) ---
 :: Scoop wrote the UV_* vars into the user environment (registry): new
 :: shells get them, but this session must set them itself so uv places
