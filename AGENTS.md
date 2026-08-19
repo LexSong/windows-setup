@@ -50,8 +50,10 @@ function, and anything a non-fish caller needs — the `SessionStart` hook runs
 `sh` — can only be a script.
 
 Because callers reach in by path, **moving anything in `scripts/` means editing
-its caller in the fish repo or `~/.claude/settings.json`**, both outside this
-repo (and the latter isn't version-controlled at all).
+its caller** — a function in the fish repo, or the `SessionStart` hook in
+`dotfiles/.claude/settings.json`. The fish repo is a separate clone, so that
+edit is tracked elsewhere; the Claude settings are linked into home from here,
+so that one lands as a diff in this repo.
 
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
@@ -59,6 +61,12 @@ repo (and the latter isn't version-controlled at all).
   `link.cmd` (the "link wheel": `:link <repo file> <target under %USERPROFILE%>`).
   Symlinks point home→repo so in-place edits show up as git diffs. Needs
   Developer Mode for `mklink` without admin.
+- **`dotfiles/.claude/settings.json`** — Claude Code's user settings, holding the
+  `SessionStart` hook that runs `scripts/project-checkup.sh`. Only this file is
+  linked; `~/.claude/.credentials.json` and the rest of that directory stay out
+  of the repo. The path is mirrored here because it's shallow —
+  `yt-dlp.config` stays flat since `AppData\Roaming\yt-dlp\` isn't worth
+  reproducing.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
 - **`scripts/pyproject.sh`** — run by `pyproject`. Copies

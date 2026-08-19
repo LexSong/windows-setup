@@ -11,6 +11,7 @@ set "SRC=%~dp0"
 cd /d "%USERPROFILE%"
 
 call :link .gitconfig .gitconfig || exit /b
+call :link .claude\settings.json .claude\settings.json || exit /b
 call :link yt-dlp.config AppData\Roaming\yt-dlp\config || exit /b
 :: from the windows-terminal-settings repo, cloned next to the dotfiles
 call :link windows-terminal-settings\settings.json AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json || exit /b
