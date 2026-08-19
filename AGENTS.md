@@ -79,13 +79,8 @@ so that one lands as a diff in this repo.
   It refuses to run where a `pyproject.toml` already exists; topping up an
   existing project is the bare `cp -rn` that `project-checkup.sh` suggests —
   which is why that path leaves the hooks uninstalled and checkup reports it.
-
-  Formatting sits at commit time on purpose. It used to be a `PostToolUse` hook
-  that formatted every file Claude wrote, which fired on intermediate edits
-  nobody would keep and stayed invisible to the agent — so the agent ran `ruff`
-  itself anyway, to be sure. A commit is the point where the code is finished
-  and a human is already present, so it is the only place the rewrite is worth
-  running. Don't reintroduce editor- or agent-time formatting.
+  Don't reintroduce editor- or agent-time formatting; a `PostToolUse` hook was
+  tried and removed.
 - **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
 - **`scripts/project-checkup.sh`** — run by `checkup`, and by a `SessionStart`
   hook in `~/.claude/settings.json`. Names my own repos that are missing a
@@ -122,10 +117,8 @@ so that one lands as a diff in this repo.
   stateful install so it can be the default browser; Steam), and anything
   needing admin plus a reboot (WSL, and Docker Sandboxes on top of it). Don't
   fold these in — bootstrap runs non-admin, linear, in one pass.
-- Ruff handles Python imports too — `reorder-python-imports` was dropped, and with
-  it the `--ignore=I001` workaround it forced. `force-single-line` in a project's
-  `pyproject.toml` is what keeps one-import-per-line; don't reintroduce a second
-  import tool.
+- Ruff handles Python imports too; don't add a second import tool.
+  `force-single-line` in a project's `pyproject.toml` keeps one per line.
 - CapsLock→Ctrl is done in hardware now; `scripts/capslock-to-ctrl.ps1` is
   kept only for machines without that keyboard.
 - Repo `.ps1` files run under **`pwsh`** with no execution-policy flag: pwsh
