@@ -5,6 +5,12 @@
   },
   "effortLevel": "high",
   "theme": "dark",
+  "permissions": {
+    "deny": [
+      "Bash(ruff format *)",
+      "Bash(ruff check --fix *)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
