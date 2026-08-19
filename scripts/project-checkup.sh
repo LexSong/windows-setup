@@ -38,6 +38,16 @@ if [ -f pyproject.toml ]; then
     fi
 fi
 
+if [ -d .venv/Lib/site-packages ]; then
+    # Same volume is the whole precondition -- uv can only hardlink within one, and
+    # a venv that sits away from the cache has no fix worth reporting.
+    cache=$(readlink -f "$(cygpath -u "$(uv cache dir)")")
+    if [ "$(printf %s "$cache" | cut -d/ -f2)" = "$(printf %s "$(readlink -f .venv)" | cut -d/ -f2)" ] &&
+        [ -z "$(find .venv/Lib/site-packages -maxdepth 3 -type f -links +1 -print -quit)" ]; then
+        add "nothing in .venv is hardlinked though the uv cache shares its volume -- every wheel is stored twice (fix: uv sync --reinstall)"
+    fi
+fi
+
 if [ -z "$findings" ]; then
     exit 0
 fi

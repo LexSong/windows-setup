@@ -79,8 +79,9 @@ so that one lands as a diff in this repo.
 - **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
 - **`scripts/project-checkup.sh`** — run by `checkup`, and by a `SessionStart`
   hook in `~/.claude/settings.json`. Names my own repos that are missing a
-  `CLAUDE.md`, `force-single-line`, or the per-project format hook; silent
-  otherwise, and silent about repos that aren't mine.
+  `CLAUDE.md`, `force-single-line`, or the per-project format hook, and venvs
+  holding copies where uv could hardlink; silent otherwise, and silent about
+  repos that aren't mine.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those
