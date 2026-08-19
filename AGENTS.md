@@ -51,9 +51,8 @@ function, and anything a non-fish caller needs — the `SessionStart` hook runs
 
 Because callers reach in by path, **moving anything in `scripts/` means editing
 its caller** — a function in the fish repo, or the `SessionStart` hook in
-`dotfiles/.claude/settings.json`. The fish repo is a separate clone, so that
-edit is tracked elsewhere; the Claude settings are linked into home from here,
-so that one lands as a diff in this repo.
+`~/.claude/settings.json`. Both are separate clones, so that edit is tracked
+outside this repo and won't show up in a diff here.
 
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
@@ -61,12 +60,6 @@ so that one lands as a diff in this repo.
   `link.cmd` (the "link wheel": `:link <repo file> <target under %USERPROFILE%>`).
   Symlinks point home→repo so in-place edits show up as git diffs. Needs
   Developer Mode for `mklink` without admin.
-- **`dotfiles/.claude/settings.json`** — Claude Code's user settings, holding the
-  `SessionStart` hook that runs `scripts/project-checkup.sh`. Only this file is
-  linked; `~/.claude/.credentials.json` and the rest of that directory stay out
-  of the repo. The path is mirrored here because it's shallow —
-  `yt-dlp.config` stays flat since `AppData\Roaming\yt-dlp\` isn't worth
-  reproducing.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
 - **`scripts/pyproject.sh`** — run by `pyproject`. Copies
@@ -87,10 +80,11 @@ so that one lands as a diff in this repo.
   `CLAUDE.md`, `force-single-line`, or pre-commit (config absent, or present
   but never installed), and venvs holding copies where uv could hardlink;
   silent otherwise, and silent about repos that aren't mine.
-- Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
-  on purpose — each is its own ecosystem and shouldn't have changes mixed in.
-  `bootstrap.cmd` clones them into place; their changes are tracked in those
-  repos, not this one.
+- Fish, Neovim, Windows Terminal, and Claude Code settings each stay in **their
+  own repos** on purpose — each is its own ecosystem and shouldn't have changes
+  mixed in. Their changes are tracked in those repos, not this one.
+  `bootstrap.cmd` clones the first three into place; `~/.claude` is the
+  exception, since Claude Code creates that directory before a clone could.
 
 ## Ordering gotchas in bootstrap.cmd (don't "tidy" these)
 
