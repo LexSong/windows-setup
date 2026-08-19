@@ -33,8 +33,15 @@ if [ -f pyproject.toml ]; then
     if ! grep -q force-single-line pyproject.toml; then
         add "pyproject.toml has no force-single-line -- ruff's isort will recombine split imports"
     fi
-    if [ ! -f .claude/settings.json ]; then
-        add "no .claude/settings.json -- Claude's Python edits are not auto-formatted (cp -rn ~/windows-setup/scripts/pyproject-template/. .)"
+    if [ ! -f .pre-commit-config.yaml ]; then
+        add "no .pre-commit-config.yaml -- nothing formats Python on the way into a commit (cp -rn ~/windows-setup/scripts/pyproject-template/. .)"
+    elif [ ! -f .git/hooks/pre-commit ]; then
+        add ".pre-commit-config.yaml is present but was never installed -- the hooks do not run (fix: pre-commit install)"
+    fi
+    # The template used to ship this hook; pre-commit replaced it.
+    if grep -q PostToolUse .claude/settings.json 2>/dev/null &&
+        grep -q ruff .claude/settings.json 2>/dev/null; then
+        add "a PostToolUse ruff hook in .claude/settings.json still reformats every edit (fix: drop the hook, or the whole file if that is all it holds)"
     fi
 fi
 

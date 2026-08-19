@@ -10,5 +10,14 @@ if [ -e pyproject.toml ]; then
     exit 1
 fi
 
-# `/.` copies the template's dotfiles too (.claude/); -n never clobbers.
+# `/.` copies the template's dotfiles too (.pre-commit-config.yaml); -n never
+# clobbers.
 cp -rn "$(dirname "$0")/pyproject-template/." .
+
+# A config file alone does nothing -- pre-commit only runs once it has written
+# .git/hooks/pre-commit, and it can only do that inside a repo. Scaffolding a
+# project before `git init` is fine, so this is the one step that may be
+# skipped; project-checkup.sh reports it if it was.
+if git rev-parse --git-dir >/dev/null 2>&1; then
+    pre-commit install
+fi

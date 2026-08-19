@@ -72,16 +72,26 @@ so that one lands as a diff in this repo.
 - **`scripts/pyproject.sh`** — run by `pyproject`. Copies
   `scripts/pyproject-template/` wholesale into a new project (`cp -rn …/. .`),
   so the folder mirrors what lands: `pyproject.toml`, plus a
-  `.claude/settings.json` whose PostToolUse hook runs ruff on Python files
-  Claude edits. Grow the folder rather than teaching the script about individual
-  files. It refuses to run where a `pyproject.toml` already exists; topping up
-  an existing project is the bare `cp -rn` that `project-checkup.sh` suggests.
+  `.pre-commit-config.yaml` running ruff at commit time. Grow the folder rather
+  than teaching the script about individual files. The one exception is the
+  `pre-commit install` it runs afterward: a config file does nothing until
+  pre-commit writes `.git/hooks/pre-commit`, and that is a command, not a file.
+  It refuses to run where a `pyproject.toml` already exists; topping up an
+  existing project is the bare `cp -rn` that `project-checkup.sh` suggests —
+  which is why that path leaves the hooks uninstalled and checkup reports it.
+
+  Formatting sits at commit time on purpose. It used to be a `PostToolUse` hook
+  that formatted every file Claude wrote, which fired on intermediate edits
+  nobody would keep and stayed invisible to the agent — so the agent ran `ruff`
+  itself anyway, to be sure. A commit is the point where the code is finished
+  and a human is already present, so it is the only place the rewrite is worth
+  running. Don't reintroduce editor- or agent-time formatting.
 - **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
 - **`scripts/project-checkup.sh`** — run by `checkup`, and by a `SessionStart`
   hook in `~/.claude/settings.json`. Names my own repos that are missing a
-  `CLAUDE.md`, `force-single-line`, or the per-project format hook, and venvs
-  holding copies where uv could hardlink; silent otherwise, and silent about
-  repos that aren't mine.
+  `CLAUDE.md`, `force-single-line`, or pre-commit (config absent, or present
+  but never installed), and venvs holding copies where uv could hardlink;
+  silent otherwise, and silent about repos that aren't mine.
 - Fish, Neovim, and Windows Terminal settings each stay in **their own repos**
   on purpose — each is its own ecosystem and shouldn't have changes mixed in.
   `bootstrap.cmd` clones them into place; their changes are tracked in those
