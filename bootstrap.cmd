@@ -48,7 +48,7 @@ call scoop install bat diffutils dust fd fzf just ripgrep scoop-search topgrade 
 call scoop install gcc jq nodejs pixi ruff rust sqlite stylua taplo tree-sitter uv || exit /b
 
 :: Multimedia
-call scoop install avidemux ffmpeg IrfanView vlc || exit /b
+call scoop install avidemux ffmpeg IrfanView mpc-hc-fork || exit /b
 
 :: Downloads, cloud sync, and backup
 call scoop install megacmd qbittorrent rclone restic || exit /b
