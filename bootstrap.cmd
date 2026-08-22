@@ -85,6 +85,9 @@ set "MSYS2=%USERPROFILE%\scoop\apps\msys2\current"
 "%MSYS2%\usr\bin\pacman.exe" -Syu --noconfirm || exit /b
 "%MSYS2%\usr\bin\pacman.exe" -S --needed --noconfirm fish || exit /b
 
+:: adds fish.cmd (and fish) as scoop shims -- the WT profile calls fish.cmd directly
+call scoop shim add fish "%USERPROFILE%\scoop\shims\msys2.cmd" -- -full-path -shell fish || exit /b
+
 :: --- uv's cache lives on D: ---
 :: The cache holds the multi-GB wheels (torch), and hardlinking into a venv only
 :: works within one volume, so the cache belongs beside the projects on D: rather
