@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.9"
-# dependencies = ["pysubs2", "yt-dlp"]
+# dependencies = ["curl_cffi", "pysubs2", "yt-dlp"]
 # ///
 """Download YouTube subtitles and convert them to plain text."""
 
