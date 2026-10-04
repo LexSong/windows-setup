@@ -44,7 +44,11 @@ def main():
         ydl_opts.setdefault("subtitleslangs", ["en"])
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download(urls)
+            # download() returns a non-zero code when yt-dlp hit an error
+            # (network, bot check, private video). yt-dlp already printed it.
+            if ydl.download(urls):
+                print("yt-dlp failed; see errors above.")
+                sys.exit(1)
 
         srt_files = list(Path(tmp).glob("*.srt"))
         if not srt_files:
