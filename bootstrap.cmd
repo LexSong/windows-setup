@@ -67,6 +67,9 @@ call scoop install megacmd qbittorrent rclone restic || exit /b
 ::   winmerge - diff and merge
 call scoop install adb scrcpy CrystalDiskMark czkawka krokiet innounp llama-swap mitmproxy pandoc rapidee spacesniffer typora winmerge || exit /b
 
+:: rapidee's manifest has no bin entry, so add its shim by hand
+call scoop shim add rapidee "%USERPROFILE%\scoop\apps\rapidee\current\rapidee.exe" || exit /b
+
 :: --- Fonts: "CaskaydiaMono Nerd Font", used by the Windows Terminal profile ---
 call scoop bucket add nerd-fonts
 call scoop install CascadiaMono-NF || exit /b
