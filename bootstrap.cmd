@@ -53,20 +53,20 @@ call scoop install avidemux ffmpeg IrfanView mpc-hc-fork || exit /b
 :: Downloads, cloud sync, and backup
 call scoop install megacmd qbittorrent rclone restic || exit /b
 
-:: Misc:
-::   adb, scrcpy - Android
-::   CrystalDiskMark - benchmark
-::   czkawka, krokiet - duplicate finder (krokiet is the GUI)
-::   innounp - Inno Setup unpacker
-::   llama-swap - local LLM proxy
-::   mitmproxy - HTTP debugging proxy
-::   pandoc - document converter
-::   rapidee - environment variable editor
-::   spacesniffer - disk usage
-::   typora - markdown editor
-::   winmerge - diff and merge
-call scoop install adb scrcpy CrystalDiskMark czkawka krokiet innounp llama-swap mitmproxy pandoc rapidee spacesniffer typora winmerge || exit /b
+:: Android
+call scoop install adb scrcpy || exit /b
 
+:: Disk health, benchmark, and usage
+call scoop install CrystalDiskInfo CrystalDiskMark spacesniffer || exit /b
+
+:: Documents, diffs, and duplicate files
+call scoop install czkawka krokiet pandoc typora winmerge || exit /b
+
+:: Others
+call scoop install innounp llama-swap mitmproxy || exit /b
+
+:: Windows environment variables
+call scoop install rapidee || exit /b
 :: rapidee's manifest has no bin entry, so add its shim by hand
 call scoop shim add rapidee "%USERPROFILE%\scoop\apps\rapidee\current\rapidee.exe" || exit /b
 
