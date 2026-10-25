@@ -33,7 +33,7 @@ if [ -f pyproject.toml ]; then
         add "pyproject.toml has no force-single-line -- ruff's isort will recombine split imports"
     fi
     if [ ! -f .pre-commit-config.yaml ]; then
-        add "no .pre-commit-config.yaml -- nothing formats Python on the way into a commit (cp -rn ~/windows-setup/scripts/pyproject-template/. .)"
+        add "no .pre-commit-config.yaml -- nothing formats Python on the way into a commit (fix: copy template/pre-commit-config.yaml from my-python-cookiecutter, then pre-commit install)"
     elif [ ! -f .git/hooks/pre-commit ]; then
         add ".pre-commit-config.yaml is present but was never installed -- the hooks do not run (fix: pre-commit install)"
     fi

@@ -33,7 +33,7 @@ portability.
   stops being linked moves out.
 - **`scripts/`** — the *payload* layer: everything run from the clone, whether
   something outside this repo reaches it by path (fish functions) or I run it
-  by hand. A script's own data (`pyproject-template/`) sits next to it.
+  by hand. A script's own data sits next to it.
 - **root** — `bootstrap.cmd`, the only file fetched before the clone exists,
   plus repo metadata. Nothing else: once the repo is on disk everything is
   reachable by path, so nothing else earns a raw URL.
@@ -41,11 +41,11 @@ portability.
 The fish repo is the *interface* layer: every function there wraps a command,
 and what it wraps decides where the work lives. `topgrade` and `gpu-limit` wrap
 `topgrade` and `nvidia-smi` — arrangements of commands that already exist, so
-fish holds all of them however long they get. `yt-sub-txt`, `pyproject`, and
-`checkup` wrap a payload that had to be written, and payloads don't belong in
-shell config, so fish keeps only the invocation. Two cases are forced: a
-function that shadows the binary it calls (`restic`, `topgrade`) can only be a
-function, and anything a non-fish caller needs can only be a script.
+fish holds all of them however long they get. `yt-sub-txt` and `checkup` wrap a
+payload that had to be written, and payloads don't belong in shell config, so
+fish keeps only the invocation. Two cases are forced: a function that shadows
+the binary it calls (`restic`, `topgrade`) can only be a function, and anything
+a non-fish caller needs can only be a script.
 
 Because callers reach in by path, **moving anything in `scripts/` means editing
 its caller** — a function in the fish repo. That is a separate clone, so the
@@ -59,18 +59,9 @@ edit is tracked outside this repo and won't show up in a diff here.
   Developer Mode for `mklink` without admin.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **`scripts/pyproject.sh`** — run by `pyproject`. Copies
-  `scripts/pyproject-template/` wholesale into a new project (`cp -rn …/. .`),
-  so the folder mirrors what lands: `pyproject.toml`, plus a
-  `.pre-commit-config.yaml` running ruff at commit time. Grow the folder rather
-  than teaching the script about individual files. The one exception is the
-  `pre-commit install` it runs afterward: a config file does nothing until
-  pre-commit writes `.git/hooks/pre-commit`, and that is a command, not a file.
-  It refuses to run where a `pyproject.toml` already exists; topping up an
-  existing project is the bare `cp -rn` that `project-checkup.sh` suggests —
-  which is why that path leaves the hooks uninstalled and checkup reports it.
-  Don't reintroduce editor- or agent-time formatting; a `PostToolUse` hook was
-  tried and removed.
+- **`my-cookiecutter`** — scaffolds new Python projects. It lives in its own
+  repo, `LexSong/my-python-cookiecutter`, which bootstrap installs with
+  `uv tool install git+…`, so change it there, not here.
 - **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
 - **`scripts/project-checkup.sh`** — run by `checkup`. Names my own repos that
   are missing a `CLAUDE.md`, `force-single-line`, or pre-commit (config
