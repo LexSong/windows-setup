@@ -114,6 +114,7 @@ set "PATH=%UV_TOOL_BIN_DIR%;%PATH%"
 uv tool install gallery-dl || exit /b
 uv tool install git-filter-repo || exit /b
 uv tool install huggingface-hub || exit /b
+uv tool install pre-commit || exit /b
 uv tool install yt-dlp || exit /b
 
 :: --- npm global tools ---
