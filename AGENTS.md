@@ -1,133 +1,53 @@
 # Notes for coding agents
 
-Context for anyone (human or agent) editing this repo. This is the
-version-controlled layer of one personal Windows 11 Home machine — `$HOME`
-itself isn't a repo, so anything on this machine worth tracking lands here.
-`bootstrap.cmd` is the largest deliverable, not the scope. It's a single-user
-setup, not a general-purpose framework: optimize for *this* machine, not for
-portability.
+This repo is the version-controlled layer of one personal Windows 11 Home
+machine. Optimize for this machine, not for portability.
 
-## Golden rules
+## Rules
 
-- **Never commit or push without explicit approval.** Make the edit, show the
-  diff, then wait. Avoid `git commit -a` / `-am`: the user often has concurrent
-  edits in the working tree that it would sweep in.
-- **`bootstrap.cmd` and `dotfiles/link.cmd` must stay CRLF.** They travel via
-  `curl` and git to a bare machine and run under cmd.exe. `.gitattributes` pins
-  `*.cmd -text`. After a multi-line edit, verify line endings didn't get
-  normalized to LF.
-- **Linear, crash-on-failure.** Every meaningful line in `bootstrap.cmd` ends
-  with `|| exit /b` so the script stops at the first failure (batch otherwise
-  continues on error). Don't add cleverness, retries, or error recovery. Lines
-  *without* the guard are deliberately allowed to fail so a re-run is safe.
-- **`call` before every `.cmd` shim** (`scoop`, `npm`) — without `call`, batch
+- **Never commit or push without my approval.** Show the diff, then wait. I
+  often have my own edits in the working tree, so avoid `git commit -a`.
+- **`bootstrap.cmd` and `dotfiles/link.cmd` must stay CRLF.** They run under
+  cmd.exe on a bare machine. `.gitattributes` pins `*.cmd -text`, but an editor
+  can still write LF, so check the line endings after an edit.
+- **`bootstrap.cmd` stays linear.** It runs non-admin, top to bottom, in one
+  pass, and stops at the first failure. Don't add retries or error recovery.
+  Its comments mark the steps whose order matters; keep that order.
+- **Put `call` before every `.cmd` shim** (`scoop`, `npm`). Without it, batch
   jumps into the shim and never returns.
+- **Run repo `.ps1` files with `pwsh`, not `powershell`.** pwsh defaults to
+  `RemoteSigned`, but Windows PowerShell 5.1 on a fresh machine does not.
 
-## Architecture
+## Where things go
 
-**Where things go.** Every directory here has an entry criterion about
-*presence*, so nothing is a residual junk drawer:
+- **`dotfiles/`**: only files that `link.cmd` symlinks into home. A file that
+  stops being linked moves out. `dotfiles/windows-terminal-settings/` is a
+  separate repo (gitignored) that bootstrap clones there.
+- **`scripts/`**: payloads run from the clone, by hand or by a fish function.
+  Fish reaches a script by its path, so moving a script means editing the fish
+  repo too.
+- **root**: `bootstrap.cmd`, the only file fetched before the clone exists, plus
+  repo metadata.
+- **Other repos**: fish, Neovim, Windows Terminal and `~/.claude` each have
+  their own repo, and so do my uv tools `my-python-cookiecutter` and
+  `yt-sub-txt`. Make their changes there.
 
-- **`dotfiles/`** — the *linkage* layer: a file belongs here only if `link.cmd`
-  symlinks it into home. Membership **means** "this is linked", so a file that
-  stops being linked moves out.
-- **`scripts/`** — the *payload* layer: everything run from the clone, whether
-  something outside this repo reaches it by path (fish functions) or I run it
-  by hand. A script's own data sits next to it.
-- **root** — `bootstrap.cmd`, the only file fetched before the clone exists,
-  plus repo metadata. Nothing else: once the repo is on disk everything is
-  reachable by path, so nothing else earns a raw URL.
+## Installs
 
-The fish repo is the *interface* layer: every function there wraps a command,
-and what it wraps decides where the work lives. `topgrade` and `gpu-limit` wrap
-`topgrade` and `nvidia-smi` — arrangements of commands that already exist, so
-fish holds all of them however long they get. `checkup` wraps a payload that had
-to be written, and payloads don't belong in shell config, so fish keeps only the
-invocation. Two cases are forced: a function that shadows
-the binary it calls (`restic`, `topgrade`) can only be a function, and anything
-a non-fish caller needs can only be a script.
+Scoop, uv and npm install apps portable, which I prefer, so bootstrap covers
+what they can manage. Some apps need a stateful install (Chrome, so it can be
+the default browser; Steam), or admin plus a reboot (WSL, Docker Sandboxes).
+Those go through winget by hand and stay out of bootstrap.
 
-Because callers reach in by path, **moving anything in `scripts/` means editing
-its caller** — a function in the fish repo. That is a separate clone, so the
-edit is tracked outside this repo and won't show up in a diff here.
+MSYS2 uses the Windows `HOME`, so `setx HOME` is the only glue between Windows
+and fish. Don't add path fixups.
 
-- **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
-  prompt. Order matters and is load-bearing (see below).
-- **`dotfiles/`** — loose files tracked here and **symlinked** into home by
-  `link.cmd` (the "link wheel": `:link <repo file> <target under %USERPROFILE%>`).
-  Symlinks point home→repo so in-place edits show up as git diffs. Needs
-  Developer Mode for `mklink` without admin.
-- **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
-  (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **`my-cookiecutter`, `yt-sub-txt`** — uv tools that each live in their own
-  repo (`LexSong/my-python-cookiecutter`, `LexSong/yt-sub-txt`). Bootstrap
-  installs them with `uv tool install git+…`, so change them there, not here.
-- **`scripts/project-checkup.sh`** — run by `checkup`. Names my own repos that
-  are missing a `CLAUDE.md`, `force-single-line`, or pre-commit (config
-  absent, or present but never installed), and venvs holding copies where uv
-  could hardlink; silent otherwise, and silent about repos that aren't mine.
-- Fish, Neovim, Windows Terminal, and Claude Code settings each stay in **their
-  own repos** on purpose — each is its own ecosystem and shouldn't have changes
-  mixed in. Their changes are tracked in those repos, not this one.
-  `bootstrap.cmd` clones the first three into place; `~/.claude` is the
-  exception, since Claude Code creates that directory before a clone could.
+## README
 
-## Ordering gotchas in bootstrap.cmd (don't "tidy" these)
+README is a map for me on a fresh machine. Keep the commands and what I would
+forget: where a Windows setting lives, which step needs a reboot, that
+bootstrap is safe to re-run. Rationale goes in this file or in script comments.
+Write full sentences, not clipped notes.
 
-- `setx` writes the **permanent** user environment (registry); it does **not**
-  affect the current session. So anything the script itself needs later
-  (`UV_*`, nodejs on PATH, uv tool shims) is *also* set with `set` in-session.
-- `scoop install git` runs **before** `scoop bucket add extras` — scoop uses git
-  to clone buckets. `vcredist2022` lives in the extras bucket.
-- `pacman -Syu` runs **twice** — the first pass may only upgrade the core
-  (runtime, pacman) and stop.
-- `npm install -g npm` runs before other npm globals so the global npm lands in
-  the persist dir and survives nodejs updates.
-
-## Environment facts
-
-- User's daily shell is MSYS2 fish. MSYS2 honors the Windows `HOME`, so
-  `setx HOME %USERPROFILE%` is the only glue — path handling is otherwise
-  transparent; don't add fixups.
-- No global Python. Use `uv run` / `uv tool`; never call `python`/`pip`.
-- **Portable by default.** Scoop installs apps stateless/portable, which is the
-  preference, so `bootstrap.cmd` covers what scoop, uv, and npm can manage that
-  way. The exceptions go to winget and stay out of the script: apps where
-  portability causes more trouble than it saves (Chrome, wanted as a real
-  stateful install so it can be the default browser; Steam), and anything
-  needing admin plus a reboot (WSL, and Docker Sandboxes on top of it). Don't
-  fold these in — bootstrap runs non-admin, linear, in one pass.
-- Ruff handles Python imports too; don't add a second import tool.
-  `force-single-line` in a project's `pyproject.toml` keeps one per line.
-- CapsLock→Ctrl is done in hardware now; `scripts/capslock-to-ctrl.ps1` is
-  kept only for machines without that keyboard.
-- Repo `.ps1` files run under **`pwsh`** with no execution-policy flag: pwsh
-  ships a `powershell.config.json` setting LocalMachine to `RemoteSigned`, and a
-  git clone carries no mark-of-the-web. Windows PowerShell 5.1 has no such
-  default — this machine's `RemoteSigned` sits in HKCU and a fresh one wouldn't
-  have it — so invoke them with `pwsh`, not `powershell`. The
-  `-ExecutionPolicy Bypass` in `bootstrap.cmd` is per-invocation for the scoop
-  installer's piped `iex`; it persists nothing.
-- README commands are written for the daily shell (fish/MSYS2), so paths use
-  `~/`. pwsh doesn't expand `~` itself, so there is no form that also works in
-  cmd.exe — `%USERPROFILE%` is cmd-only. Bootstrap is the exception; it names
-  cmd.exe explicitly. The wrong shell fails loudly, which is the intended
-  outcome: assume the reader knows `sudo`, `pwsh`, and `~/`, and can act on an
-  error. Don't add shell detection or explain the difference in the README.
-
-## README is a map, not a manual
-
-The reader is the user on a fresh machine: they know the tools, they need the
-route. Keep the commands, and the things they'd forget — where a Windows setting
-lives, that a step needs a reboot, that bootstrap is safe to re-run. Cut the
-rationale: why the script is linear, why scoop over winget, what a flag does.
-That belongs in this file or in the script's own comments. A section that grows
-past a short paragraph plus its commands has turned into documentation.
-
-Trim rationale, not grammar. Full sentences, not note-taking fragments — clipped
-text ("Linear: stops at first failure.") reads as fragile, not concise.
-
-## When unsure
-
-Ask. The user knows this machine and prefers simple, explicit wording over
-hand-holding. Don't explain command-line basics in README or comments.
+Commands are written for fish, so paths use `~/`. Don't add shell detection,
+and don't explain other shells.
