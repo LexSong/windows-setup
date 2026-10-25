@@ -114,9 +114,10 @@ set "PATH=%UV_TOOL_BIN_DIR%;%PATH%"
 uv tool install gallery-dl || exit /b
 uv tool install git-filter-repo || exit /b
 uv tool install huggingface-hub || exit /b
-uv tool install git+https://github.com/LexSong/my-python-cookiecutter || exit /b
 uv tool install pre-commit || exit /b
 uv tool install yt-dlp || exit /b
+uv tool install git+https://github.com/LexSong/my-python-cookiecutter || exit /b
+uv tool install git+https://github.com/LexSong/yt-sub-txt || exit /b
 
 :: --- npm global tools ---
 :: nodejs has no scoop shims; it lives on PATH via the user environment

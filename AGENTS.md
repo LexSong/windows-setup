@@ -41,9 +41,9 @@ portability.
 The fish repo is the *interface* layer: every function there wraps a command,
 and what it wraps decides where the work lives. `topgrade` and `gpu-limit` wrap
 `topgrade` and `nvidia-smi` — arrangements of commands that already exist, so
-fish holds all of them however long they get. `yt-sub-txt` and `checkup` wrap a
-payload that had to be written, and payloads don't belong in shell config, so
-fish keeps only the invocation. Two cases are forced: a function that shadows
+fish holds all of them however long they get. `checkup` wraps a payload that had
+to be written, and payloads don't belong in shell config, so fish keeps only the
+invocation. Two cases are forced: a function that shadows
 the binary it calls (`restic`, `topgrade`) can only be a function, and anything
 a non-fish caller needs can only be a script.
 
@@ -59,10 +59,9 @@ edit is tracked outside this repo and won't show up in a diff here.
   Developer Mode for `mklink` without admin.
 - **`dotfiles/windows-terminal-settings/`** — a *separate* repo cloned in here
   (gitignored), linked via `link.cmd`. Its `settings.json` is the real target.
-- **`my-cookiecutter`** — scaffolds new Python projects. It lives in its own
-  repo, `LexSong/my-python-cookiecutter`, which bootstrap installs with
-  `uv tool install git+…`, so change it there, not here.
-- **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
+- **`my-cookiecutter`, `yt-sub-txt`** — uv tools that each live in their own
+  repo (`LexSong/my-python-cookiecutter`, `LexSong/yt-sub-txt`). Bootstrap
+  installs them with `uv tool install git+…`, so change them there, not here.
 - **`scripts/project-checkup.sh`** — run by `checkup`. Names my own repos that
   are missing a `CLAUDE.md`, `force-single-line`, or pre-commit (config
   absent, or present but never installed), and venvs holding copies where uv
