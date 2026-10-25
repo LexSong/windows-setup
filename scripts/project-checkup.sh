@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
-# Report project config I keep forgetting to add. Wired to SessionStart in
-# ~/.claude/settings.json so Claude is told once per session; also runnable by
-# hand through the `checkup` fish function.
+# Report project config I keep forgetting to add. Runnable by hand through the
+# `checkup` fish function.
 #
 # Prints nothing when there is nothing to say. Only speaks about my own repos --
 # a foreign clone's conventions are its own business. Silence one repo with a
@@ -59,4 +58,4 @@ if [ -z "$findings" ]; then
     exit 0
 fi
 
-printf 'project-checkup (%s) -- mention these once; do not fix them unasked:\n%s' "${root##*/}" "$findings"
+printf 'project-checkup (%s):\n%s' "${root##*/}" "$findings"

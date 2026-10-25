@@ -32,9 +32,8 @@ portability.
   symlinks it into home. Membership **means** "this is linked", so a file that
   stops being linked moves out.
 - **`scripts/`** — the *payload* layer: everything run from the clone, whether
-  something outside this repo reaches it by path (fish functions, a hook in
-  `~/.claude/settings.json`) or I run it by hand. A script's own data
-  (`pyproject-template/`) sits next to it.
+  something outside this repo reaches it by path (fish functions) or I run it
+  by hand. A script's own data (`pyproject-template/`) sits next to it.
 - **root** — `bootstrap.cmd`, the only file fetched before the clone exists,
   plus repo metadata. Nothing else: once the repo is on disk everything is
   reachable by path, so nothing else earns a raw URL.
@@ -46,13 +45,11 @@ fish holds all of them however long they get. `yt-sub-txt`, `pyproject`, and
 `checkup` wrap a payload that had to be written, and payloads don't belong in
 shell config, so fish keeps only the invocation. Two cases are forced: a
 function that shadows the binary it calls (`restic`, `topgrade`) can only be a
-function, and anything a non-fish caller needs — the `SessionStart` hook runs
-`sh` — can only be a script.
+function, and anything a non-fish caller needs can only be a script.
 
 Because callers reach in by path, **moving anything in `scripts/` means editing
-its caller** — a function in the fish repo, or the `SessionStart` hook in
-`~/.claude/settings.json`. Both are separate clones, so that edit is tracked
-outside this repo and won't show up in a diff here.
+its caller** — a function in the fish repo. That is a separate clone, so the
+edit is tracked outside this repo and won't show up in a diff here.
 
 - **`bootstrap.cmd`** — the one deliverable. Runs on a fresh, non-admin cmd
   prompt. Order matters and is load-bearing (see below).
@@ -75,11 +72,10 @@ outside this repo and won't show up in a diff here.
   Don't reintroduce editor- or agent-time formatting; a `PostToolUse` hook was
   tried and removed.
 - **`scripts/yt-sub-txt.py`** — run by `yt-sub-txt` via `uv run --script`.
-- **`scripts/project-checkup.sh`** — run by `checkup`, and by a `SessionStart`
-  hook in `~/.claude/settings.json`. Names my own repos that are missing a
-  `CLAUDE.md`, `force-single-line`, or pre-commit (config absent, or present
-  but never installed), and venvs holding copies where uv could hardlink;
-  silent otherwise, and silent about repos that aren't mine.
+- **`scripts/project-checkup.sh`** — run by `checkup`. Names my own repos that
+  are missing a `CLAUDE.md`, `force-single-line`, or pre-commit (config
+  absent, or present but never installed), and venvs holding copies where uv
+  could hardlink; silent otherwise, and silent about repos that aren't mine.
 - Fish, Neovim, Windows Terminal, and Claude Code settings each stay in **their
   own repos** on purpose — each is its own ecosystem and shouldn't have changes
   mixed in. Their changes are tracked in those repos, not this one.
