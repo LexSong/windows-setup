@@ -45,7 +45,7 @@ call scoop uninstall vcredist2022 || exit /b
 call scoop install bat diffutils dust fd fzf just ripgrep scoop-search topgrade || exit /b
 
 :: Programming languages and dev tooling
-call scoop install gcc jq nodejs pixi ruff rust sqlite stylua taplo tree-sitter uv || exit /b
+call scoop install gcc jq nodejs ruff rust sqlite stylua taplo tree-sitter uv || exit /b
 
 :: Multimedia
 call scoop install avidemux ffmpeg IrfanView mpc-hc-fork || exit /b
