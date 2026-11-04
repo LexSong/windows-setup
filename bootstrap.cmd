@@ -63,12 +63,7 @@ call scoop install CrystalDiskInfo CrystalDiskMark spacesniffer || exit /b
 call scoop install czkawka krokiet pandoc typora winmerge || exit /b
 
 :: Others
-call scoop install innounp llama-swap mitmproxy || exit /b
-
-:: Windows environment variables
-call scoop install rapidee || exit /b
-:: rapidee's manifest has no bin entry, so add its shim by hand
-call scoop shim add rapidee "%USERPROFILE%\scoop\apps\rapidee\current\rapidee.exe" || exit /b
+call scoop install innounp llama-swap mitmproxy rapidee || exit /b
 
 :: --- Fonts: "CaskaydiaMono Nerd Font", used by the Windows Terminal profile ---
 call scoop bucket add nerd-fonts
