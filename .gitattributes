@@ -1,1 +1,2 @@
 *.cmd -text
+bin/* text eol=lf

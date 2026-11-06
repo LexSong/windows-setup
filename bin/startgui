@@ -1,0 +1,10 @@
+#!/bin/sh
+# Usage: startgui PROGRAM [ARG...]
+#
+# A GUI started from a shell inherits the console handles, so the tab stays open
+# until the GUI quits. ShellExecute passes no handles, and rundll32 can call it.
+# MSYS2 converts absolute path arguments when it starts rundll32, so this script
+# converts only the program path.
+program=$(command -v "$1") || exit
+shift
+rundll32 shell32.dll,ShellExec_RunDLL "$(cygpath -w -- "$program")" "$@"

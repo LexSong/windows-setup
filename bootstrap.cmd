@@ -129,6 +129,9 @@ if not exist "%USERPROFILE%\windows-setup" (git clone https://github.com/LexSong
 if not exist "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" (git clone https://github.com/LexSong/windows-terminal-settings "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" || exit /b)
 call "%USERPROFILE%\windows-setup\dotfiles\link.cmd" || exit /b
 
+:: --- User PATH: replace it with the tracked list, after the steps that add to it ---
+pwsh -NoProfile -File "%USERPROFILE%\windows-setup\scripts\user-path.ps1" -Overwrite || exit /b
+
 :: --- Fish config ---
 if not exist "%USERPROFILE%\.config\fish" (git clone https://github.com/LexSong/fish "%USERPROFILE%\.config\fish" || exit /b)
 

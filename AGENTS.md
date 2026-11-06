@@ -23,9 +23,12 @@ machine. Optimize for this machine, not for portability.
 - **`dotfiles/`**: only files that `link.cmd` symlinks into home. A file that
   stops being linked moves out. `dotfiles/windows-terminal-settings/` is a
   separate repo (gitignored) that bootstrap clones there.
-- **`scripts/`**: payloads run from the clone, by hand or by a fish function.
+- **`scripts/`**: payloads run from the clone, by hand, by bootstrap or by a fish
+  function.
   Fish reaches a script by its path, so moving a script means editing the fish
   repo too.
+- **`bin/`**: MSYS shell scripts on the user PATH, which fish and just recipes
+  call by name.
 - **root**: `bootstrap.cmd`, the only file fetched before the clone exists, plus
   repo metadata.
 - **Other repos**: fish, Neovim, Windows Terminal and `~/.claude` each have

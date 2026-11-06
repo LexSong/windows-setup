@@ -21,6 +21,7 @@ The script is linear — it stops at the first failure and is safe to run again.
 - Sets up MSYS2 and installs fish, the daily shell.
 - Installs the uv and npm global tools.
 - Clones this repo to `%USERPROFILE%\windows-setup`, with the [Windows Terminal settings](https://github.com/LexSong/windows-terminal-settings) nested in [dotfiles/](dotfiles), then symlinks the files there into home.
+- Replaces the user `PATH` with the list in [scripts/user-path.ps1](scripts/user-path.ps1). Run that script without flags to see how `PATH` differs from the list.
 - Clones the [fish](https://github.com/LexSong/fish) and [Neovim](https://github.com/LexSong/nvim) config repos into place.
 
 Bootstrap only installs what scoop, uv, and npm can manage portably; Chrome, Steam, and WSL are separate steps. Read [bootstrap.cmd](bootstrap.cmd) for the details.
