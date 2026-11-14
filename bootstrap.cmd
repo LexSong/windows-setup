@@ -42,7 +42,7 @@ call scoop install vcredist2022 || exit /b
 call scoop uninstall vcredist2022 || exit /b
 
 :: Essential command-line tools
-call scoop install bat diffutils dust fd fzf just ripgrep scoop-search topgrade || exit /b
+call scoop install bat diffutils dust fd fzf just ripgrep scoop-search topgrade trashy || exit /b
 
 :: Programming languages and dev tooling
 call scoop install gcc jq nodejs ruff rust sqlite stylua taplo tree-sitter uv || exit /b
