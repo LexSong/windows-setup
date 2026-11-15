@@ -7,9 +7,9 @@ machine. Optimize for this machine, not for portability.
 
 - **Never commit or push without my approval.** Show the diff, then wait. I
   often have my own edits in the working tree, so avoid `git commit -a`.
-- **`bootstrap.cmd` and `dotfiles/link.cmd` must stay CRLF.** They run under
-  cmd.exe on a bare machine. `.gitattributes` pins `*.cmd -text`, but an editor
-  can still write LF, so check the line endings after an edit.
+- **`bootstrap.cmd` must stay CRLF.** It runs under cmd.exe on a bare machine.
+  `.gitattributes` pins `*.cmd -text`, but an editor can still write LF, so
+  check the line endings after an edit.
 - **`bootstrap.cmd` stays linear.** It runs non-admin, top to bottom, in one
   pass, and stops at the first failure. Don't add retries or error recovery.
   Its comments mark the steps whose order matters; keep that order.
@@ -20,7 +20,7 @@ machine. Optimize for this machine, not for portability.
 
 ## Where things go
 
-- **`dotfiles/`**: only files that `link.cmd` symlinks into home. A file that
+- **`dotfiles/`**: only files that bootstrap symlinks into home. A file that
   stops being linked moves out. `dotfiles/windows-terminal-settings/` is a
   separate repo (gitignored) that bootstrap clones there.
 - **`scripts/`**: payloads run from the clone, by hand, by bootstrap or by a fish

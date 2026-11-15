@@ -124,10 +124,16 @@ call npm install -g npm || exit /b
 call npm install -g cspell prettier pyright || exit /b
 
 :: --- Dotfiles: tracked in this repo, symlinked into home ---
-:: (needs Developer Mode for mklink without admin -- see README.md)
+:: (needs Developer Mode for symlinks without admin -- see README.md)
 if not exist "%USERPROFILE%\windows-setup" (git clone https://github.com/LexSong/windows-setup "%USERPROFILE%\windows-setup" || exit /b)
 if not exist "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" (git clone https://github.com/LexSong/windows-terminal-settings "%USERPROFILE%\windows-setup\dotfiles\windows-terminal-settings" || exit /b)
-call "%USERPROFILE%\windows-setup\dotfiles\link.cmd" || exit /b
+:: Each line replaces a home file with a symlink to the repo copy, so in-place
+:: edits show up as git diffs here. -Force replaces an existing file or link
+:: and creates missing folders.
+set "DOTFILES=%USERPROFILE%\windows-setup\dotfiles"
+pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%USERPROFILE%\.gitconfig' -Target '%DOTFILES%\.gitconfig'" || exit /b
+pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%APPDATA%\yt-dlp\config' -Target '%DOTFILES%\yt-dlp.config'" || exit /b
+pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json' -Target '%DOTFILES%\windows-terminal-settings\settings.json'" || exit /b
 
 :: --- User PATH: replace it with the tracked list, after the steps that add to it ---
 pwsh -NoProfile -File "%USERPROFILE%\windows-setup\scripts\user-path.ps1" -Overwrite || exit /b
