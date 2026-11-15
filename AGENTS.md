@@ -20,8 +20,8 @@ machine. Optimize for this machine, not for portability.
 
 ## Where things go
 
-- **`dotfiles/`**: only files that bootstrap symlinks into home. A file that
-  stops being linked moves out. `dotfiles/windows-terminal-settings/` is a
+- **`dotfiles/`**: only config files that bootstrap symlinks into home or
+  points a variable at. A file that bootstrap stops using moves out. `dotfiles/windows-terminal-settings/` is a
   separate repo (gitignored) that bootstrap clones there.
 - **`scripts/`**: payloads run from the clone, by hand, by bootstrap or by a fish
   function.

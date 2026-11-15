@@ -1,0 +1,26 @@
+# ripgrep reads this file only through RIPGREP_CONFIG_PATH (bootstrap sets it).
+# One flag per line. Flags typed on the command line come later, so they win.
+
+# Case-insensitive, unless the pattern has an uppercase letter.
+--smart-case
+
+# Search hidden files (names that start with "."), and files that .gitignore
+# lists. .ignore and .rgignore files still apply, so a repo can opt out a path.
+--hidden
+--no-ignore-vcs
+
+# --hidden shows hidden folders. Git folders are hidden but not gitignored, so
+# skip them here. writers-room/git-rev.sh keeps a git folder named <project>.rev.
+--glob=!.git/
+--glob=!*.rev/
+
+# --no-ignore-vcs shows gitignored files, so skip the gitignored folders that
+# are never worth searching. Installed environments and dependencies:
+--glob=!.venv/
+--glob=!node_modules/
+
+# Caches:
+--glob=!.mypy_cache/
+--glob=!.pytest_cache/
+--glob=!.ruff_cache/
+--glob=!__pycache__/

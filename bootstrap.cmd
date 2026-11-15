@@ -134,6 +134,9 @@ set "DOTFILES=%USERPROFILE%\windows-setup\dotfiles"
 pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%USERPROFILE%\.gitconfig' -Target '%DOTFILES%\.gitconfig'" || exit /b
 pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%APPDATA%\yt-dlp\config' -Target '%DOTFILES%\yt-dlp.config'" || exit /b
 pwsh -NoProfile -Command "New-Item -ItemType SymbolicLink -Force -Path '%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json' -Target '%DOTFILES%\windows-terminal-settings\settings.json'" || exit /b
+:: ripgrep has no default config location, so it needs no link. It reads the
+:: file this variable names, and the repo copy can be that file.
+setx RIPGREP_CONFIG_PATH "%DOTFILES%\.ripgreprc" || exit /b
 
 :: --- User PATH: replace it with the tracked list, after the steps that add to it ---
 pwsh -NoProfile -File "%USERPROFILE%\windows-setup\scripts\user-path.ps1" -Overwrite || exit /b
