@@ -1,0 +1,5 @@
+#!/bin/sh
+# Native Windows jq.exe writes CRLF line endings, but MSYS tools expect LF.
+# So this script shadows jq on PATH and adds -b (--binary), which writes LF.
+# It calls jq.exe by its full name, so the shell does not find this script again.
+exec jq.exe -b "$@"
