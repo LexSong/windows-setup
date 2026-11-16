@@ -1,0 +1,29 @@
+#!/bin/sh
+# Usage: start_ [TARGET [ARG...]]
+# TARGET is a program on PATH, a file or folder, or a URL. For a console
+# program in a new window, start `wt`: start_ wt nvim notes.md
+#
+# The name has a trailing underscore because MSYS2's /usr/bin/start comes first
+# on PATH in Git Bash and MSYS2 fish. Fish wraps this script as `start`.
+#
+# A GUI started from a shell inherits the console handles, so the tab stays open
+# until the GUI quits. ShellExecute passes no handles, and rundll32 can call it.
+# MSYS2 converts absolute path arguments when it starts rundll32, so this script
+# converts only TARGET.
+# With no TARGET, open the current folder, as `start .` does in cmd.
+target=${1:-.}
+[ $# -gt 0 ] && shift
+if [ -d "$target" ]; then
+    # ShellExec_RunDLL opens nothing for a folder. explorer.exe hands the window
+    # to the running Explorer and exits at once. It always exits 1, so ignore it.
+    explorer.exe "$(cygpath -aw -- "$target")"
+    exit 0
+elif [ -e "$target" ]; then
+    # A file: open it with its default app, as a double-click does.
+    target=$(cygpath -aw -- "$target")
+elif program=$(command -v -- "$target") && [ -f "$program" ]; then
+    # A program on PATH. For a builtin such as `cd`, command -v prints no file.
+    target=$(cygpath -w -- "$program")
+fi
+# Anything else (https://..., mailto:, ms-settings:) goes to ShellExecute as is.
+rundll32 shell32.dll,ShellExec_RunDLL "$target" "$@"
