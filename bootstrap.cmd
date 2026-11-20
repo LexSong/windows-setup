@@ -121,7 +121,7 @@ set "PATH=%USERPROFILE%\scoop\apps\nodejs\current\bin;%USERPROFILE%\scoop\apps\n
 :: npm itself first: the global copy lives in the persist dir, so it
 :: survives nodejs updates (the bundled one is replaced each update)
 call npm install -g npm || exit /b
-call npm install -g cspell prettier pyright || exit /b
+call npm install -g prettier pyright || exit /b
 
 :: --- Dotfiles: tracked in this repo, symlinked into home ---
 :: (needs Developer Mode for symlinks without admin -- see README.md)
